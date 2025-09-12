@@ -46,7 +46,6 @@ Aplikasi **SID (Sistem Informasi Desa)** adalah aplikasi web yang membantu pemer
 -   Publikasi informasi pembangunan dan APBDes.
 -   Dashboard statistik sederhana.
 -   **(Opsional)** Sinkron / integrasi API ke sistem kabupaten/provinsi.
--   **Progress:** Setup awal.
 
 ---
 
