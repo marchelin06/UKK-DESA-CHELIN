@@ -6,6 +6,7 @@ use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SuratController extends Controller
 {
@@ -340,6 +341,12 @@ class SuratController extends Controller
             $dataTambahan = array_merge($dataTambahan, [
                 'nik_ktp' => $request->nik_ktp,
                 'nama_ktp' => $request->nama_ktp,
+                'tempat_lahir_ktp' => $request->tempat_lahir_ktp,
+                'tanggal_lahir_ktp' => $request->tanggal_lahir_ktp,
+                'jenis_kelamin_ktp' => $request->jenis_kelamin_ktp,
+                'agama_ktp' => $request->agama_ktp,
+                'pekerjaan_ktp' => $request->pekerjaan_ktp,
+                'status_perkawinan_ktp' => $request->status_perkawinan_ktp,
                 'alamat_ktp_ktp' => $request->alamat_ktp_ktp,
                 'jenis_permohonan' => $request->jenis_permohonan,
                 'alasan_permohonan' => $request->alasan_permohonan,
@@ -381,7 +388,7 @@ class SuratController extends Controller
                 'status_rumah' => $request->status_rumah,
                 'tujuan_sktm' => $request->tujuan_sktm,
                 'instansi_sktm' => $request->instansi_sktm,
-                'keterangan_tambahan' => $request->keterangan_tambahan,
+                'keterangan_tambahan_sktm' => $request->keterangan_tambahan_sktm,
             ]);
         } elseif ($jenisSurat === 'Surat Pengantar KUA') {
             $dataTambahan = array_merge($dataTambahan, [
@@ -465,8 +472,8 @@ class SuratController extends Controller
             'estimasi_selesai' => 'nullable|date',
             'catatan_admin'    => 'nullable|string',
             'alasan_penolakan' => $request->status === 'ditolak'
-                                  ? 'required|string'
-                                  : 'nullable|string',
+                ? 'required|string'
+                : 'nullable|string',
         ], [
             'alasan_penolakan.required' => 'Alasan penolakan wajib diisi jika surat ditolak.',
         ]);
@@ -516,5 +523,25 @@ class SuratController extends Controller
         $surat->save();
 
         return back()->with('success', 'Surat ditolak!');
+    }
+
+    public function cetak(Surat $surat)
+    {
+        // Pastikan hanya user yang bersangkutan yang bisa cetak, atau admin
+        if (Auth::user()->id !== $surat->user_id && Auth::user()->role !== 'admin') {
+            abort(403, 'Anda tidak memiliki akses untuk mencetak surat ini.');
+        }
+
+        // Pastikan statusnya disetujui
+        if ($surat->status !== 'disetujui') {
+            abort(403, 'Surat ini belum disetujui dan tidak bisa dicetak.');
+        }
+
+        // data_tambahan sudah di-cast ke array oleh model Surat (asumsi)
+        $detail = $surat->data_tambahan;
+
+        $pdf = Pdf::loadView('surat.cetak', compact('surat', 'detail'));
+        $pdf->setPaper('a4', 'portrait');
+        return $pdf->stream('Surat_' . $surat->jenis_surat . '.pdf');
     }
 }

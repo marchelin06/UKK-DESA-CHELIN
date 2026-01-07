@@ -10,6 +10,8 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KegiatanController;
 
+use Illuminate\Support\Facades\Auth;
+
 // --------------------------
 // BERANDA
 // --------------------------
@@ -28,6 +30,10 @@ Route::post('/login/admin', [AdminAuthController::class, 'login'])->name('login.
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/surat/{surat}/cetak', [SuratController::class, 'cetak'])->name('surat.cetak');
+});
 
 // --------------------------
 // WARGA
