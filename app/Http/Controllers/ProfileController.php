@@ -9,10 +9,18 @@ class ProfileController extends Controller
 {
     /**
      * Menampilkan halaman profil user
+     * Jika NIK dan No HP belum lengkap, arahkan ke edit
      */
     public function show()
     {
         $user = Auth::user();
+        
+        // Jika data belum lengkap, arahkan ke form edit
+        if ($user->nik == null || $user->no_hp == null) {
+            return redirect()->route('profile.edit')
+                ->with('info', 'Silakan lengkapi data diri Anda terlebih dahulu.');
+        }
+        
         return view('profile.show', ['user' => $user]);
     }
 

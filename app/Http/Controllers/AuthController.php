@@ -50,13 +50,7 @@ class AuthController extends Controller
                 ->with('success', 'Login berhasil!');
             }
 
-            // Cek apakah NIK dan No HP sudah dilengkapi
-            if (Auth::user()->nik == null || Auth::user()->no_hp == null) {
-                return redirect()->route('profile.edit')
-                    ->with('info', 'Silakan lengkapi data diri Anda terlebih dahulu.');
-            }
-
-            return redirect()->route('dashboard')
+            return redirect()->route('profile.show')
                 ->with('success', 'Login berhasil!');
         }
 

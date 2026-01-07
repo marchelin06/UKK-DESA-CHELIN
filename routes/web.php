@@ -32,7 +32,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 // --------------------------
 // WARGA
 // --------------------------
-Route::middleware(['auth', 'role:warga'])->group(function () {
+Route::middleware(['auth', 'role:warga', 'check.profile'])->group(function () {
 
     Route::get('/dashboard', function () {
         return view('dashboard', ['user' => Auth::user()]);
@@ -105,7 +105,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // --------------------------
 
 // Pengaduan - HANYA UNTUK WARGA
-Route::middleware(['auth', 'role:warga'])->group(function () {
+Route::middleware(['auth', 'role:warga', 'check.profile'])->group(function () {
     Route::get('/layanan/pengaduan', [PengaduanController::class, 'create'])->name('pengaduan.create');
     Route::post('/layanan/pengaduan', [PengaduanController::class, 'store'])->name('pengaduan.store');
     Route::get('/layanan/riwayat-pengaduan', [PengaduanController::class, 'riwayat'])->name('pengaduan.riwayat');
