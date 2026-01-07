@@ -314,6 +314,12 @@
             <div class="quick-action-desc">Kelola aset desa</div>
         </a>
 
+        <a href="{{ route('admin.kegiatan') }}" class="quick-action-card">
+            <div class="quick-action-icon">🎉</div>
+            <div class="quick-action-title">Kegiatan Desa</div>
+            <div class="quick-action-desc">Kelola kegiatan dan acara</div>
+        </a>
+
         <a href="{{ route('pengaduan.index') }}" class="quick-action-card">
             <div class="quick-action-icon">💬</div>
             <div class="quick-action-title">Pengaduan</div>
@@ -345,6 +351,15 @@
                 Kelola barang milik desa, peralatan, fasilitas umum, dan aset penting lainnya.
             </div>
             <a href="{{ route('inventaris.index') }}" class="service-link">Kelola →</a>
+        </div>
+
+        <div class="service-card">
+            <div class="service-icon">🎉</div>
+            <div class="service-title">Kegiatan Desa</div>
+            <div class="service-desc">
+                Kelola kegiatan desa, acara, dan program-program penting yang melibatkan masyarakat.
+            </div>
+            <a href="{{ route('admin.kegiatan') }}" class="service-link">Kelola kegiatan →</a>
         </div>
 
         <div class="service-card">

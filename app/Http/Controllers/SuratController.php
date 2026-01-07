@@ -305,7 +305,7 @@ class SuratController extends Controller
             'data_tambahan'  => !empty($dataTambahan) ? $dataTambahan : null,
         ]);
 
-        return redirect()->back()->with('success', 'Pengajuan surat berhasil dikirim!');
+        return redirect()->route('surat.index')->with('success', 'Pengajuan surat berhasil dikirim! Silakan lihat riwayat pengajuan Anda di bawah.');
     }
 
     private function saveDataTambahan($request, $jenisSurat, &$dataTambahan)

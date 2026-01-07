@@ -9,14 +9,14 @@ class ProfileController extends Controller
 {
     /**
      * Menampilkan halaman profil user
-     * Jika NIK dan No HP belum lengkap, arahkan ke edit
+     * Jika NIK dan No HP belum lengkap dan user adalah warga, arahkan ke edit
      */
     public function show()
     {
         $user = Auth::user();
         
-        // Jika data belum lengkap, arahkan ke form edit
-        if ($user->nik == null || $user->no_hp == null) {
+        // Jika data belum lengkap dan user adalah warga, arahkan ke form edit
+        if (($user->nik == null || $user->no_hp == null) && $user->role === 'warga') {
             return redirect()->route('profile.edit')
                 ->with('info', 'Silakan lengkapi data diri Anda terlebih dahulu.');
         }
@@ -29,6 +29,11 @@ class ProfileController extends Controller
      */
     public function edit()
     {
+        // Hanya untuk warga
+        if (Auth::user()->role !== 'warga') {
+            abort(403, 'Unauthorized. Halaman ini hanya untuk warga.');
+        }
+
         $user = Auth::user();
         return view('profile.edit', ['user' => $user]);
     }
@@ -38,23 +43,34 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
+        // Hanya untuk warga
+        if (Auth::user()->role !== 'warga') {
+            abort(403, 'Unauthorized. Halaman ini hanya untuk warga.');
+        }
+
         $user = Auth::user();
 
-        $request->validate([
-            'nik'   => 'required|string|max:16|min:16|regex:/^[0-9]{16}$/',
-            'no_hp' => 'required|string|max:20|min:10|regex:/^(\+62|0)[0-9]{9,18}$/',
+        // Validasi NIK dan No HP
+        $validated = $request->validate([
+            'nik'   => 'required|string|digits:16',
+            'no_hp' => 'required|string|min:10|max:13',
         ], [
-            'nik.required'        => 'NIK wajib diisi.',
-            'nik.regex'           => 'NIK harus terdiri dari 16 digit angka.',
-            'nik.min'             => 'NIK harus 16 digit.',
-            'no_hp.required'      => 'Nomor HP wajib diisi.',
-            'no_hp.regex'         => 'Format nomor HP tidak valid. Gunakan format 08xxxxx atau +62xxxxx.',
-            'no_hp.min'           => 'Nomor HP minimal 10 digit.',
+            'nik.required'   => 'NIK wajib diisi.',
+            'nik.digits'     => 'NIK harus 16 digit.',
+            'no_hp.required' => 'Nomor HP wajib diisi.',
+            'no_hp.min'      => 'Nomor HP minimal 10 digit.',
+            'no_hp.max'      => 'Nomor HP maksimal 13 digit.',
         ]);
 
+        // Validasi format no_hp tambahan (harus dimulai dengan 0 atau +62)
+        $no_hp = str_replace(' ', '', $validated['no_hp']); // Hapus spasi jika ada
+        if (!preg_match('/^(0)[0-9]{9,12}$/', $no_hp)) {
+            return back()->withErrors(['no_hp' => 'Format nomor HP tidak valid. Harus dimulai dengan 0 (contoh: 08123456789)'])->withInput();
+        }
+
         $user->update([
-            'nik'   => $request->nik,
-            'no_hp' => $request->no_hp,
+            'nik'   => $validated['nik'],
+            'no_hp' => $no_hp,
         ]);
 
         return redirect()->route('profile.show')

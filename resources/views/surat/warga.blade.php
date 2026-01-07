@@ -128,38 +128,81 @@
     }
 
     .btn-primary {
-        background: #1a7f5a;
-        border: none;
-        color: #fff;
-        padding: 9px 18px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s ease;
+        background: #1a7f5a !important;
+        border: none !important;
+        color: #fff !important;
+        padding: 12px 24px !important;
+        border-radius: 6px !important;
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        display: inline-block !important;
+        text-align: center !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
     }
 
-    .btn-primary:hover {
-        background: #145c42;
+    .btn-primary:hover:not(:disabled) {
+        background: #145c42 !important;
+        box-shadow: 0 4px 8px rgba(20, 92, 66, 0.3) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    .btn-primary:active:not(:disabled) {
+        background: #0f4a33 !important;
+        transform: translateY(0) !important;
+    }
+
+    .btn-primary:disabled {
+        background: #ccc !important;
+        cursor: not-allowed !important;
+        opacity: 0.5 !important;
+    }
+    
+    .btn-primary:focus {
+        outline: 2px solid #1a7f5a !important;
+        outline-offset: 2px !important;
     }
 
     .alert {
-        padding: 10px 14px;
-        border-radius: 6px;
+        padding: 14px 16px;
+        border-radius: 8px;
         font-size: 14px;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        border-left: 4px solid;
+        animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .alert-success {
-        background: #e6f7ec;
-        border: 1px solid #b6e2c5;
-        color: #1a7f5a;
+        background: #d4edda;
+        border-left-color: #28a745;
+        color: #155724;
     }
 
     .alert-danger {
-        background: #fdecea;
-        border: 1px solid #f5c2c0;
-        color: #b02a37;
+        background: #f8d7da;
+        border-left-color: #dc3545;
+        color: #721c24;
+    }
+    
+    .alert strong {
+        font-weight: 600;
     }
 
     .badge {
@@ -1142,8 +1185,8 @@
 
                 </div> {{-- /section-online-wrapper --}}
 
-                <button type="submit" class="btn-primary">
-                    Ajukan Surat
+                <button type="submit" id="submitBtn" class="btn-primary" style="min-width: 150px; padding: 12px 24px;">
+                    <i class="fas fa-paper-plane"></i> Ajukan Surat
                 </button>
             </form>
         </div>
@@ -1235,326 +1278,94 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectJenis = document.getElementById('jenis_surat');
-
-        const wrapperOnline     = document.getElementById('section-online-wrapper');
-        const sectionDomisili   = document.getElementById('section-online-domisili');
-        const sectionUsaha      = document.getElementById('section-online-usaha');
-        const sectionSKTM       = document.getElementById('section-online-sktm');
-        const sectionKTP        = document.getElementById('section-online-ktp');
-        const sectionKelahiran  = document.getElementById('section-online-kelahiran');
-        const sectionKematian   = document.getElementById('section-online-kematian');
-        const sectionKUA        = document.getElementById('section-online-kua');
-        const sectionBelumMenikah = document.getElementById('section-online-belum-menikah');
-        const sectionTanah      = document.getElementById('section-online-tanah');
-        const sectionRapat      = document.getElementById('section-online-rapat');
-
-        const lampiranWrapper   = document.getElementById('section-lampiran-wrapper');
-        const lampiranHint      = document.getElementById('lampiran_hint');
-
-        function hideAllSections() {
-            sectionDomisili.style.display     = 'none';
-            sectionUsaha.style.display        = 'none';
-            sectionSKTM.style.display         = 'none';
-            sectionKTP.style.display          = 'none';
-            sectionKelahiran.style.display    = 'none';
-            sectionKematian.style.display     = 'none';
-            sectionKUA.style.display          = 'none';
-            sectionBelumMenikah.style.display = 'none';
-            sectionTanah.style.display        = 'none';
-            sectionRapat.style.display        = 'none';
+document.addEventListener('DOMContentLoaded', function () {
+    // VERY SIMPLE - MINIMAL LOGIC
+    const form = document.querySelector('form');
+    const submitBtn = document.getElementById('submitBtn');
+    const selectJenis = document.getElementById('jenis_surat');
+    
+    // State management
+    function updateButtonState() {
+        const value = selectJenis ? selectJenis.value : '';
+        if (value) {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+            submitBtn.style.cursor = 'not-allowed';
         }
-
-        function updateOnlineSection() {
-            const jenis = selectJenis ? selectJenis.value : '';
-
-            wrapperOnline.style.display = 'none';
-            hideAllSections();
-
-            if (lampiranWrapper) {
-                lampiranWrapper.style.display = 'none';
-            }
-
-            if (!jenis) {
-                return;
-            }
-
-            wrapperOnline.style.display = 'block';
-
-            switch (jenis) {
-                case 'Surat Domisili':
-                    sectionDomisili.style.display = 'block';
-                    break;
-                case 'Surat Keterangan Usaha':
-                    sectionUsaha.style.display = 'block';
-                    break;
-                case 'Surat Keterangan Tidak Mampu':
-                    sectionSKTM.style.display = 'block';
-                    break;
-                case 'Surat Pengantar KTP':
-                    sectionKTP.style.display = 'block';
-                    break;
-                case 'Surat Kelahiran':
-                    sectionKelahiran.style.display = 'block';
-                    break;
-                case 'Surat Kematian':
-                    sectionKematian.style.display = 'block';
-                    break;
-                case 'Surat Pengantar KUA':
-                    sectionKUA.style.display = 'block';
-                    break;
-                case 'Surat Keterangan Belum Menikah':
-                    sectionBelumMenikah.style.display = 'block';
-                    break;
-                case 'Surat Keterangan Tanah':
-                    sectionTanah.style.display = 'block';
-                    break;
-                case 'Surat Undangan Rapat':
-                    sectionRapat.style.display = 'block';
-                    break;
-            }
-
-            // Tampilkan lampiran untuk jenis tertentu dengan hint sesuai
-            if (lampiranWrapper && lampiranHint) {
-                let hintText = null;
-
-                switch (jenis) {
-                    case 'Surat Pengantar KTP':
-                        hintText = 'Disarankan mengunggah surat keterangan hilang dari kepolisian (jika KTP hilang) atau dokumen pendukung lain.';
-                        break;
-                    case 'Surat Keterangan Tidak Mampu':
-                        hintText = 'Bisa mengunggah surat pengantar RT/RW atau surat pernyataan tidak mampu (opsional).';
-                        break;
-                    case 'Surat Kelahiran':
-                        hintText = 'Disarankan mengunggah surat keterangan lahir dari bidan/rumah sakit (opsional).';
-                        break;
-                    case 'Surat Kematian':
-                        hintText = 'Disarankan mengunggah surat keterangan kematian dari dokter/puskesmas (jika ada).';
-                        break;
-                    case 'Surat Pengantar KUA':
-                        hintText = 'Bisa mengunggah fotokopi KTP/KK atau dokumen pendukung lainnya (opsional).';
-                        break;
-                    case 'Surat Keterangan Tanah':
-                        hintText = 'Bisa mengunggah bukti kepemilikan tanah atau bukti pembayaran PBB terakhir (opsional).';
-                        break;
-                    default:
-                        hintText = null;
-                }
-
-                if (hintText) {
-                    lampiranWrapper.style.display = 'block';
-                    lampiranHint.textContent = hintText;
-                }
-            }
-        }
-
-        if (selectJenis) {
-            selectJenis.addEventListener('change', updateOnlineSection);
-
-            // panggil sekali di awal untuk handle old() / reload
-            updateOnlineSection();
-        }
-
-        // Validasi tanggal - pastikan minimal tanggal hari ini
-        const dateInputs = document.querySelectorAll('.date-input');
-        const today = new Date().toISOString().split('T')[0];
-
-        dateInputs.forEach(input => {
-            // Set min date ke hari ini
-            input.setAttribute('min', today);
-
-            // Tambahkan event listener untuk validasi real-time
-            input.addEventListener('change', function() {
-                if (this.value && this.value < today) {
-                    this.value = '';
-                    alert('Tanggal tidak boleh sebelum hari ini. Silakan pilih tanggal hari ini atau setelahnya.');
-                }
-            });
-
-            // Validasi saat blur (kehilangan fokus)
-            input.addEventListener('blur', function() {
-                if (this.value && this.value < today) {
-                    this.classList.add('is-invalid');
-                    this.style.borderColor = '#dc3545';
-                } else {
-                    this.classList.remove('is-invalid');
-                    this.style.borderColor = '';
-                }
-            });
+    }
+    
+    // Init state
+    updateButtonState();
+    
+    // Listen to changes
+    if (selectJenis) {
+        selectJenis.addEventListener('change', function() {
+            updateButtonState();
+            showHideSections();
         });
-
-        // Validasi form sebelum submit
-        const form = document.querySelector('form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-                let errorMessages = [];
-
-                // Validasi tanggal
-                dateInputs.forEach(input => {
-                    if (input.value && input.value < today) {
-                        isValid = false;
-                        input.classList.add('is-invalid');
-                        input.style.borderColor = '#dc3545';
-                    }
-                });
-
-                // Validasi field required berdasarkan jenis surat
-                const jenisSuratValue = document.querySelector('select[name="jenis_surat"]')?.value;
-                const requiredFields = getRequiredFieldsForSurat(jenisSuratValue);
-
-                requiredFields.forEach(fieldName => {
-                    const field = document.querySelector(`[name="${fieldName}"]`);
-                    if (field && field.parentElement.style.display !== 'none') {
-                        if (!field.value || field.value.trim() === '') {
-                            isValid = false;
-                            field.classList.add('is-invalid');
-                            field.style.borderColor = '#dc3545';
-                            const label = field.previousElementSibling || 
-                                        document.querySelector(`label[for="${fieldName}"]`);
-                            if (label) {
-                                errorMessages.push(`${label.textContent.trim().replace('(opsional)', '').trim()} wajib diisi`);
-                            }
-                        } else {
-                            field.classList.remove('is-invalid');
-                            field.style.borderColor = '';
-                        }
-                    }
-                });
-
-                // Event listener untuk hapus error saat user mengetik
-                form.querySelectorAll('input, textarea, select').forEach(field => {
-                    field.addEventListener('input', function() {
-                        if (this.value.trim() !== '') {
-                            this.classList.remove('is-invalid');
-                            this.style.borderColor = '';
-                        }
-                    });
-                    field.addEventListener('change', function() {
-                        if (this.value.trim() !== '') {
-                            this.classList.remove('is-invalid');
-                            this.style.borderColor = '';
-                        }
-                    });
-                });
-
-                if (!isValid) {
-                    e.preventDefault();
-                    if (errorMessages.length > 0) {
-                        alert('Data belum lengkap. Silakan isi semua field yang wajib:\\n\\n' + errorMessages.join('\\n'));
-                    } else {
-                        alert('Silakan periksa tanggal yang Anda masukkan. Tanggal tidak boleh sebelum hari ini.');
-                    }
-                }
-            });
-        }
-
-        // Fungsi untuk menentukan field required berdasarkan jenis surat
-        function getRequiredFieldsForSurat(jenisSurat) {
-            const requiredFields = {
-                'Surat Domisili': ['nik', 'alamat_ktp', 'dusun_domisili', 'rt_domisili', 'rw_domisili', 'alamat_domisili', 'tanggal_mulai_tinggal', 'lama_tinggal', 'alasan_domisili', 'no_hp_domisili'],
-                'Surat Keterangan Usaha': ['nik_usaha', 'nama_usaha', 'alamat_usaha', 'jenis_usaha', 'tanggal_mulai_usaha', 'modal_usaha', 'jumlah_karyawan', 'no_hp_usaha'],
-                'Surat Pengantar KTP': ['nik_ktp', 'nama_ktp', 'alamat_ktp_ktp', 'jenis_permohonan', 'alasan_permohonan', 'no_hp_ktp'],
-                'Surat Kelahiran': ['nama_bayi', 'jenis_kelamin_bayi', 'tempat_lahir_bayi', 'tanggal_lahir_bayi', 'berat_bayi', 'panjang_bayi', 'nama_ayah', 'nik_ayah', 'nama_ibu', 'nik_ibu', 'alamat_orangtua', 'no_kk_kelahiran', 'lampiran_kelahiran'],
-                'Surat Kematian': ['nama_almarhum', 'nik_almarhum', 'umur_almarhum', 'alamat_almarhum', 'tanggal_meninggal', 'tempat_meninggal', 'hubungan_pemohon'],
-                'Surat Keterangan Tidak Mampu': ['nik_sktm', 'nama_sktm', 'alamat_sktm', 'status_pekerjaan', 'penghasilan_bulanan', 'jumlah_anggota_keluarga', 'status_rumah', 'tujuan_sktm', 'no_hp_sktm'],
-                'Surat Pengantar KUA': ['nama_calon_suami', 'nik_calon_suami', 'alamat_calon_suami', 'pekerjaan_suami', 'nama_calon_istri', 'nik_calon_istri', 'alamat_calon_istri', 'pekerjaan_istri', 'tanggal_nikah', 'tempat_nikah'],
-                'Surat Keterangan Belum Menikah': ['nik_belum_menikah', 'nama_belum_menikah', 'alamat_belum_menikah', 'tujuan_belum_menikah', 'instansi_belum_menikah'],
-                'Surat Keterangan Tanah': ['lokasi_tanah', 'luas_tanah', 'peruntukan', 'batas_utara', 'batas_selatan', 'batas_timur', 'batas_barat', 'status_tanah'],
-                'Surat Undangan Rapat': ['tipe_rapat', 'judul_rapat', 'agenda_rapat', 'tanggal_rapat', 'waktu_rapat', 'tempat_rapat', 'penerima_undangan', 'penanggung_jawab']
-            };
-            return requiredFields[jenisSurat] || [];
-        }
-
-        // Validasi Input: NIK - hanya angka, 16 digit
-        const nikInputs = document.querySelectorAll('#nik, #nik_usaha, #nik_ktp, #nik_almarhum, #nik_sktm, #nik_calon_suami, #nik_calon_istri, #nik_belum_menikah');
-        nikInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-                if (this.value.length > 16) {
-                    this.value = this.value.slice(0, 16);
-                }
-            });
-        });
-
-        // Validasi Input: RT dan RW - hanya angka
-        const rtRwInputs = document.querySelectorAll('#rt_domisili, #rw_domisili');
-        rtRwInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-            });
-        });
-
-        // Validasi Input: No. HP - hanya angka, 10-13 digit
-        const phoneInputs = document.querySelectorAll('#no_hp_domisili, #no_hp_usaha, #no_hp_sktm, #no_hp_ktp');
-        phoneInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^0-9]/g, '');
-                if (this.value.length > 13) {
-                    this.value = this.value.slice(0, 13);
-                }
-            });
-
-            input.addEventListener('blur', function() {
-                if (this.value.length > 0 && (this.value.length < 10 || this.value.length > 13)) {
-                    alert('Nomor HP harus 10-13 digit!');
-                    this.focus();
-                }
-            });
-        });
-
-        // Validasi Tanggal Mulai Tinggal (Domisili) - tidak boleh maju dari hari ini
-        const tglMulaiTinggal = document.getElementById('tanggal_mulai_tinggal');
-        if (tglMulaiTinggal) {
-            const today = new Date().toISOString().split('T')[0];
-            tglMulaiTinggal.max = today;
-        }
-
-        // Tanggal Lahir Bayi dan Tanggal Meninggal - bisa maju atau mundur (tanpa batasan)
-        // Jadi tidak perlu ada validasi khusus, biarkan user memilih tanggal apapun
-
-        // Validasi Lama Usaha berdasarkan Tanggal Mulai Usaha
-        const tglMulaiUsaha = document.getElementById('tanggal_mulai_usaha');
-        const lamaUsaha = document.getElementById('lama_usaha');
         
-        if (tglMulaiUsaha && lamaUsaha) {
-            const checkLamaUsaha = () => {
-                const tglMulai = new Date(tglMulaiUsaha.value);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                if (tglMulai < today) {
-                    lamaUsaha.required = true;
-                    lamaUsaha.style.borderColor = '#dc3545';
-                } else {
-                    lamaUsaha.required = false;
-                    lamaUsaha.style.borderColor = '';
-                }
+        // Trigger on load
+        selectJenis.dispatchEvent(new Event('change'));
+    }
+    
+    // SHOW/HIDE sections
+    function showHideSections() {
+        const selectedValue = selectJenis ? selectJenis.value : '';
+        
+        // Hide all
+        const sections = document.querySelectorAll('[id^="section-online-"]');
+        sections.forEach(s => s.style.display = 'none');
+        
+        const wrapper = document.getElementById('section-online-wrapper');
+        if (wrapper) wrapper.style.display = selectedValue ? 'block' : 'none';
+        
+        // Show selected
+        if (selectedValue) {
+            const sectionMap = {
+                'Surat Domisili': 'section-online-domisili',
+                'Surat Keterangan Usaha': 'section-online-usaha',
+                'Surat Keterangan Tidak Mampu': 'section-online-sktm',
+                'Surat Pengantar KTP': 'section-online-ktp',
+                'Surat Kelahiran': 'section-online-kelahiran',
+                'Surat Kematian': 'section-online-kematian',
+                'Surat Pengantar KUA': 'section-online-kua',
+                'Surat Keterangan Belum Menikah': 'section-online-belum-menikah',
+                'Surat Keterangan Tanah': 'section-online-tanah',
+                'Surat Undangan Rapat': 'section-online-rapat'
             };
             
-            tglMulaiUsaha.addEventListener('change', checkLamaUsaha);
+            if (sectionMap[selectedValue]) {
+                const el = document.getElementById(sectionMap[selectedValue]);
+                if (el) el.style.display = 'block';
+            }
         }
-
-        // Validasi Jam Undangan Rapat - jika tanggal = hari ini, jam tidak boleh sebelum jam sekarang
-        const tglRapat = document.getElementById('tanggal_rapat');
-        const jamRapat = document.getElementById('waktu_rapat');
-        
-        if (tglRapat && jamRapat) {
-            const checkJamRapat = () => {
-                const tglRapatVal = tglRapat.value;
-                const today = new Date().toISOString().split('T')[0];
-                
-                if (tglRapatVal === today) {
-                    const now = new Date().toTimeString().slice(0, 5);
-                    jamRapat.min = now;
-                } else {
-                    jamRapat.min = '';
-                }
-            };
-            
-            tglRapat.addEventListener('change', checkJamRapat);
-        }
+    }
+    
+    // INPUT FILTERING - Numbers only
+    const nikSelectors = '#nik, #nik_usaha, #nik_ktp, #nik_almarhum, #nik_sktm, #nik_calon_suami, #nik_calon_istri, #nik_belum_menikah';
+    document.querySelectorAll(nikSelectors).forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16);
+        });
     });
+    
+    const phoneSelectors = '#no_hp_domisili, #no_hp_usaha, #no_hp_sktm, #no_hp_ktp';
+    document.querySelectorAll(phoneSelectors).forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13);
+        });
+    });
+    
+    const rtRwSelectors = '#rt_domisili, #rw_domisili';
+    document.querySelectorAll(rtRwSelectors).forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
+});
 </script>
 @endsection

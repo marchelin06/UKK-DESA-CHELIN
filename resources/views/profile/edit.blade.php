@@ -228,9 +228,9 @@
             {{-- NIK --}}
             <div class="form-group">
                 <label for="nik">NIK (Nomor Identitas Kependudukan) *</label>
-                <input type="text" id="nik" name="nik" class="form-control @error('nik') is-invalid @enderror"
+                <input type="number" id="nik" name="nik" class="form-control @error('nik') is-invalid @enderror"
                     placeholder="Masukkan NIK Anda (16 digit)" value="{{ old('nik', $user->nik) }}" required
-                    maxlength="16" inputmode="numeric">
+                    min="0" max="9999999999999999" maxlength="16">
                 <small class="form-info">Nomor identitas dari KTP Anda</small>
                 @error('nik')
                     <span class="error-message">{{ $message }}</span>
@@ -240,10 +240,10 @@
             {{-- No HP --}}
             <div class="form-group">
                 <label for="no_hp">Nomor HP / WhatsApp *</label>
-                <input type="text" id="no_hp" name="no_hp" class="form-control @error('no_hp') is-invalid @enderror"
+                <input type="number" id="no_hp" name="no_hp" class="form-control @error('no_hp') is-invalid @enderror"
                     placeholder="Masukkan nomor HP Anda (cth: 08123456789)" value="{{ old('no_hp', $user->no_hp) }}" required
-                    maxlength="20" inputmode="tel">
-                <small class="form-info">Gunakan format 08xxxxx atau dengan kode negara +62</small>
+                    min="0" max="9999999999999" maxlength="13">
+                <small class="form-info">Gunakan format 08xxxxx (10-13 digit)</small>
                 @error('no_hp')
                     <span class="error-message">{{ $message }}</span>
                 @enderror
@@ -263,3 +263,60 @@
 </div>
 
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Input NIK - HANYA ANGKA, TIDAK BOLEH HURUF
+        const nikInput = document.getElementById('nik');
+        
+        // Block all non-numeric input
+        nikInput.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+            const isNumeric = /^[0-9]$/.test(e.key);
+            
+            if (!isNumeric && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Clean on input event
+        nikInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            value = value.slice(0, 16);
+            e.target.value = value;
+        });
+
+        // Block paste with non-numeric
+        nikInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let text = (e.clipboardData || window.clipboardData).getData('text');
+            let clean = text.replace(/[^0-9]/g, '').slice(0, 16);
+            nikInput.value = clean;
+        });
+
+        // Input No HP - HANYA ANGKA
+        const noHpInput = document.getElementById('no_hp');
+        
+        noHpInput.addEventListener('keydown', function(e) {
+            const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+            const isNumeric = /^[0-9]$/.test(e.key);
+            
+            if (!isNumeric && !allowedKeys.includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        noHpInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^0-9]/g, '');
+            value = value.slice(0, 13);
+            e.target.value = value;
+        });
+
+        noHpInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let text = (e.clipboardData || window.clipboardData).getData('text');
+            let clean = text.replace(/[^0-9]/g, '').slice(0, 13);
+            noHpInput.value = clean;
+        });
+    });
+</script>

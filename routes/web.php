@@ -117,10 +117,15 @@ Route::middleware(['auth', 'role:warga', 'check.profile'])->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // --------------------------
-// PROFILE (authenticated users only)
+// PROFILE
 // --------------------------
+// Semua authenticated user bisa lihat profil
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+});
+
+// Edit profile hanya untuk warga
+Route::middleware(['auth', 'role:warga'])->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });

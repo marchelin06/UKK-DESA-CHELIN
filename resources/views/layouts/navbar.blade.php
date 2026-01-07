@@ -32,9 +32,9 @@
 
         <div class="sidebar-divider"></div>
 
-        {{-- Layanan Publik Button (only for warga/non-admin users) --}}
+        {{-- Layanan Publik Button (only for warga) --}}
         @auth
-            @if(auth()->user()->role !== 'admin')
+            @if(auth()->user()->role === 'warga')
             <li>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#servicesModal">
                     <i class="fas fa-cogs"></i>
@@ -99,7 +99,7 @@
     @endauth
 </nav>
 
-{{-- Services Modal (only for warga) --}}
+{{-- Services Modal (for all users) --}}
 <div class="modal fade" id="servicesModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content services-modal-content">
@@ -116,13 +116,13 @@
                     </a>
 
                     {{-- Kegiatan Desa --}}
-                    <a href="{{ route('kegiatan.index') }}" class="service-card-modal">
+                    <a href="{{ auth()->check() ? route('kegiatan.index') : route('login') }}" class="service-card-modal">
                         <div class="service-icon">🎉</div>
                         <div class="service-name">Kegiatan Desa</div>
                     </a>
 
                     {{-- Inventaris --}}
-                    <a href="{{ route('inventaris.public') }}" class="service-card-modal">
+                    <a href="{{ auth()->check() ? route('inventaris.public') : route('login') }}" class="service-card-modal">
                         <div class="service-icon">🏛️</div>
                         <div class="service-name">Inventaris Desa</div>
                     </a>
@@ -131,12 +131,6 @@
                     <a href="{{ route('pengaduan.create') }}" class="service-card-modal">
                         <div class="service-icon">💬</div>
                         <div class="service-name">Pengaduan Masyarakat</div>
-                    </a>
-
-                    {{-- Informasi (Beranda) --}}
-                    <a href="{{ route('home') }}" class="service-card-modal">
-                        <div class="service-icon">📢</div>
-                        <div class="service-name">Informasi & Pengumuman</div>
                     </a>
                 </div>
             </div>
