@@ -1511,10 +1511,22 @@
                                     </span>
                                 </td>
                                 <td>
-                                    @if($item->catatan_admin)
+                                    @if($item->catatan_admin || $item->alasan_penolakan)
                                         <div class="catatan-admin-link">
                                             📌 Ada catatan
-                                            <span class="catatan-admin-tooltip">{{ $item->catatan_admin }}</span>
+                                            <span class="catatan-admin-tooltip">
+                                                @if($item->catatan_admin)
+                                                    {{ $item->catatan_admin }}
+                                                @endif
+                                                @if($item->alasan_penolakan)
+                                                    @if($item->catatan_admin)
+                                                        <br><br><strong style="color: #b02a37;">⚠️ Alasan Penolakan:</strong><br>
+                                                    @else
+                                                        <strong style="color: #b02a37;">⚠️ Alasan Penolakan:</strong><br>
+                                                    @endif
+                                                    {{ $item->alasan_penolakan }}
+                                                @endif
+                                            </span>
                                         </div>
                                     @else
                                         <span class="text-muted">-</span>

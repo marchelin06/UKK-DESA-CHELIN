@@ -391,19 +391,23 @@
         </div>
         @endif
 
-        @if($surat->catatan_admin)
+        @if($surat->catatan_admin || $surat->alasan_penolakan)
         <div class="divider"></div>
         <div style="background: #e3f2fd; border-radius: 10px; padding: 16px; border-left: 4px solid #1565c0;">
             <div class="info-label" style="color: #0d47a1; margin-bottom: 8px;">💬 Catatan Admin</div>
-            <div class="info-value">{{ $surat->catatan_admin }}</div>
-        </div>
-        @endif
-
-        @if($surat->alasan_penolakan && auth()->user()->role === 'admin')
-        <div class="divider"></div>
-        <div style="background: #fdecea; border-radius: 10px; padding: 16px; border-left: 4px solid #c62828;">
-            <div class="info-label" style="color: #b02a37; margin-bottom: 8px;">⚠️ Alasan Penolakan</div>
-            <div class="info-value">{{ $surat->alasan_penolakan }}</div>
+            <div class="info-value">
+                @if($surat->catatan_admin)
+                    {{ $surat->catatan_admin }}
+                @endif
+                @if($surat->alasan_penolakan)
+                    @if($surat->catatan_admin)
+                        <br><br><strong style="color: #b02a37;">⚠️ Alasan Penolakan:</strong><br>
+                    @else
+                        <strong style="color: #b02a37;">⚠️ Alasan Penolakan:</strong><br>
+                    @endif
+                    {{ $surat->alasan_penolakan }}
+                @endif
+            </div>
         </div>
         @endif
     </div>

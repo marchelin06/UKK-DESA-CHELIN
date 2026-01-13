@@ -237,11 +237,7 @@
                 <td>:</td>
                 <td>{{ $detail['nik_usaha'] ?? '-' }}</td>
             </tr>
-            <tr>
-                <td>Alamat Pemilik</td>
-                <td>:</td>
-                <td>{{ $surat->user->alamat ?? '-' }}</td>
-            </tr>
+           
         </table>
         <p>
             Orang tersebut di atas adalah benar penduduk Desa Kedungrawan yang memiliki usaha sebagai berikut:
@@ -484,6 +480,157 @@
         </p>
         <p>
             Demikian surat undangan ini kami sampaikan. Atas perhatian dan kehadirannya, kami ucapkan terima kasih.
+        </p>
+        @break
+
+        {{-- SURAT PENGANTAR KUA --}}
+        @case('Surat Pengantar KUA')
+        <p>Menerangkan bahwa calon pengantin di bawah ini:</p>
+        <table class="data-table">
+            <tr>
+                <td>Nama Calon Suami</td>
+                <td>:</td>
+                <td>{{ $detail['nama_calon_suami'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>NIK Calon Suami</td>
+                <td>:</td>
+                <td>{{ $detail['nik_calon_suami'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Nama Calon Istri</td>
+                <td>:</td>
+                <td>{{ $detail['nama_calon_istri'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>NIK Calon Istri</td>
+                <td>:</td>
+                <td>{{ $detail['nik_calon_istri'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Rencana Tanggal Nikah</td>
+                <td>:</td>
+                <td>{{ $detail['tanggal_nikah'] ? \Carbon\Carbon::parse($detail['tanggal_nikah'])->translatedFormat('l, d F Y') : '-' }}</td>
+            </tr>
+            <tr>
+                <td>Tempat Akad Nikah</td>
+                <td>:</td>
+                <td>{{ $detail['tempat_nikah'] ?? '-' }}</td>
+            </tr>
+        </table>
+        <p>
+            Adalah benar penduduk Desa Kedungrawan yang akan melaksanakan pernikahan dan memerlukan pengantar untuk
+            proses administrasi di Kantor Urusan Agama (KUA) Kecamatan Krembung.
+        </p>
+        <p>
+            Surat pengantar ini dibuat berdasarkan pengajuan yang dilakukan oleh yang bersangkutan dan akan
+            dipergunakan sebagaimana mestinya di KUA Kecamatan Krembung.
+        </p>
+        @break
+
+        {{-- SURAT KETERANGAN BELUM MENIKAH --}}
+        @case('Surat Keterangan Belum Menikah')
+        <table class="data-table">
+            <tr>
+                <td>Nama Lengkap</td>
+                <td>:</td>
+                <td>{{ $detail['nama_belum_menikah'] ?? $surat->user->name }}</td>
+            </tr>
+            <tr>
+                <td>NIK</td>
+                <td>:</td>
+                <td>{{ $detail['nik_belum_menikah'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Alamat</td>
+                <td>:</td>
+                <td>{{ $detail['alamat_belum_menikah'] ?? '-' }}</td>
+            </tr>
+        </table>
+        <p>
+            Berdasarkan catatan dan data kepemilikan kami, orang tersebut di atas adalah benar penduduk Desa
+            Kedungrawan yang sampai saat ini belum pernah melakukan pernikahan (status belum menikah).
+        </p>
+        <p>
+            Surat keterangan ini dibuat untuk keperluan
+            <strong>{{ $surat->keterangan ?? ($detail['tujuan_belum_menikah'] ?? 'keperluan yang semestinya') }}</strong>
+            @if($detail['instansi_belum_menikah'] ?? false)
+            di <strong>{{ $detail['instansi_belum_menikah'] }}</strong>
+            @endif
+            dan akan dipergunakan sebagaimana mestinya.
+        </p>
+        @break
+
+        {{-- SURAT KETERANGAN TANAH --}}
+        @case('Surat Keterangan Tanah')
+        <p>Menerangkan bahwa kami telah melakukan verifikasi terhadap tanah milik:</p>
+        <table class="data-table">
+            <tr>
+                <td>Nama Pemilik</td>
+                <td>:</td>
+                <td>{{ $surat->user->name }}</td>
+            </tr>
+            <tr>
+                <td>NIK</td>
+                <td>:</td>
+                <td>{{ $detail['nik'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Alamat Pemilik</td>
+                <td>:</td>
+                <td>{{ $detail['alamat'] ?? '-' }}</td>
+            </tr>
+        </table>
+        <p>Dengan rincian tanah sebagai berikut:</p>
+        <table class="data-table">
+            <tr>
+                <td>Lokasi Tanah</td>
+                <td>:</td>
+                <td>{{ $detail['lokasi_tanah'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Luas Tanah</td>
+                <td>:</td>
+                <td>{{ $detail['luas_tanah'] ?? '-' }} m²</td>
+            </tr>
+            <tr>
+                <td>Peruntukan Tanah</td>
+                <td>:</td>
+                <td>{{ $detail['peruntukan'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Status Kepemilikan</td>
+                <td>:</td>
+                <td>{{ $detail['status_tanah'] ?? '-' }}</td>
+            </tr>
+        </table>
+        <p>Batas-batas tanah tersebut adalah sebagai berikut:</p>
+        <table class="data-table">
+            <tr>
+                <td>Batas Utara</td>
+                <td>:</td>
+                <td>{{ $detail['batas_utara'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Batas Selatan</td>
+                <td>:</td>
+                <td>{{ $detail['batas_selatan'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Batas Timur</td>
+                <td>:</td>
+                <td>{{ $detail['batas_timur'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td>Batas Barat</td>
+                <td>:</td>
+                <td>{{ $detail['batas_barat'] ?? '-' }}</td>
+            </tr>
+        </table>
+        <p>
+            Berdasarkan pengamatan lapangan dan data yang ada pada kami, surat keterangan ini menerangkan bahwa tanah
+            tersebut berada di wilayah Desa Kedungrawan dengan kondisi dan status kepemilikan sebagaimana tersebut
+            di atas. Surat ini dibuat untuk keperluan {{ $surat->keterangan ?? 'keperluan yang semestinya' }}.
         </p>
         @break
 

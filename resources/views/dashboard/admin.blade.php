@@ -295,9 +295,6 @@
                 Selamat datang. Kelola sistem desa dengan efisien.
             </div>
         </div>
-        <a href="{{ route('home') }}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
     </div>
 
     {{-- QUICK ACTIONS GRID --}}
