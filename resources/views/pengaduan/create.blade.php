@@ -272,7 +272,7 @@
                 {{-- Tombol Submit --}}
                 <div class="form-actions">
                     <a href="{{ route('home') }}" class="btn btn-outline-secondary">
-                        ← Kembali
+                        <i class="fas fa-chevron-left"></i> Kembali
                     </a>
                     <button type="submit" class="btn btn-success">
                         ✓ Kirim Pengaduan

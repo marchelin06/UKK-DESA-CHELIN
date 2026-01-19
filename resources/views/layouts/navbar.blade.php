@@ -19,6 +19,26 @@
             </a>
         </li>
 
+        {{-- Layanan Publik (HANYA UNTUK WARGA - BUKAN ADMIN) --}}
+        @auth
+            @if(auth()->user()->role === 'warga')
+                <li>
+                    <a href="{{ route('layanan.publik') }}" class="@if(request()->routeIs('layanan.*')) active @endif">
+                        <i class="fas fa-cogs"></i>
+                        <span>Layanan Publik</span>
+                    </a>
+                </li>
+            @endif
+        @endauth
+        @guest
+            <li>
+                <a href="{{ route('layanan.publik') }}" class="@if(request()->routeIs('layanan.*')) active @endif">
+                    <i class="fas fa-cogs"></i>
+                    <span>Layanan Publik</span>
+                </a>
+            </li>
+        @endguest
+
         {{-- Dashboard (only for authenticated users) --}}
         @auth
             <li>
@@ -28,20 +48,6 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-        @endauth
-
-        <div class="sidebar-divider"></div>
-
-        {{-- Layanan Publik Button (only for warga) --}}
-        @auth
-            @if(auth()->user()->role === 'warga')
-            <li>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#servicesModal">
-                    <i class="fas fa-cogs"></i>
-                    <span>Layanan Publik</span>
-                </a>
-            </li>
-            @endif
         @endauth
 
         <div class="sidebar-divider"></div>
@@ -98,42 +104,3 @@
     </div>
     @endauth
 </nav>
-
-{{-- Services Modal (for all users) --}}
-<div class="modal fade" id="servicesModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content services-modal-content">
-            <div class="modal-header services-modal-header">
-                <h5 class="modal-title">Layanan Publik</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="services-grid-modal">
-                    {{-- Surat Menyurat --}}
-                    <a href="{{ auth()->check() ? (auth()->user()->role === 'warga' ? route('surat.index') : route('admin.surat')) : route('login') }}" class="service-card-modal">
-                        <div class="service-icon">📄</div>
-                        <div class="service-name">Surat Menyurat</div>
-                    </a>
-
-                    {{-- Kegiatan Desa --}}
-                    <a href="{{ auth()->check() ? route('kegiatan.index') : route('login') }}" class="service-card-modal">
-                        <div class="service-icon">🎉</div>
-                        <div class="service-name">Kegiatan Desa</div>
-                    </a>
-
-                    {{-- Inventaris --}}
-                    <a href="{{ auth()->check() ? route('inventaris.public') : route('login') }}" class="service-card-modal">
-                        <div class="service-icon">🏛️</div>
-                        <div class="service-name">Inventaris Desa</div>
-                    </a>
-
-                    {{-- Pengaduan --}}
-                    <a href="{{ route('pengaduan.create') }}" class="service-card-modal">
-                        <div class="service-icon">💬</div>
-                        <div class="service-name">Pengaduan Masyarakat</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

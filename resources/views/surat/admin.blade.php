@@ -84,25 +84,26 @@
     }
 
     .btn-back {
-        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        border: none;
-        cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
         font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
         color: white;
-        transform: translateX(-3px);
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
     }
 </style>
 
@@ -115,7 +116,7 @@
             </p>
         </div>
         <a href="{{ route('admin.dashboard') }}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Kembali
+            <i class="fas fa-chevron-left"></i> Kembali
         </a>
     </div>
 

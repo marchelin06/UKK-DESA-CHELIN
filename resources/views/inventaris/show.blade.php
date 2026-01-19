@@ -35,6 +35,27 @@
     .badge-baik { background: #d4edda; color: #155724; }
     .badge-ringan { background: #fff3cd; color: #856404; }
     .badge-berat { background: #f8d7da; color: #721c24; }
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        margin: 5px 5px 5px 0;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .btn-secondary { background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%); color: white; }
+    .btn-secondary:hover { background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%); color: white; box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3); }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-primary:hover { background: #0056b3; }
+    .btn-danger { background: #dc3545; color: white; }
+    .btn-danger:hover { background: #c82333; }
+    .mb-3 { margin-bottom: 15px; }
+    .mt-3 { margin-top: 15px; }
 </style>
 
 @php
@@ -47,7 +68,11 @@
 @endphp
 
 <div class="page-detail-inventaris">
-    <a href="{{ route('inventaris.index') }}" class="btn btn-secondary mb-3">← Kembali ke daftar</a>
+    @if(Auth::check() && Auth::user()->role === 'admin')
+        <a href="{{ route('inventaris.index') }}" class="btn btn-secondary mb-3"><i class="fas fa-chevron-left"></i> Kembali ke daftar</a>
+    @else
+        <a href="{{ route('dashboard') }}" class="btn btn-secondary mb-3"><i class="fas fa-chevron-left"></i> Kembali ke dashboard</a>
+    @endif
 
     <div class="card">
         <h1 class="page-title">{{ $item->nama_barang }}</h1>

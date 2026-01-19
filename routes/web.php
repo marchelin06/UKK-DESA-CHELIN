@@ -9,6 +9,7 @@ use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\NotificationController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,30 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('beranda');
 })->name('home');
+
+// --------------------------
+// LAYANAN PUBLIK (PUBLIC - UNTUK SEMUA GUEST)
+// --------------------------
+Route::get('/layanan-publik', function () {
+
+    return view('layanan.publik-index');
+})->name('layanan.publik');
+
+Route::get('/layanan-publik/surat', function () {
+    return view('layanan.surat-info');
+})->name('layanan.surat');
+
+Route::get('/layanan-publik/inventaris', function () {
+    return view('layanan.inventaris-info');
+})->name('layanan.inventaris');
+
+Route::get('/layanan-publik/kegiatan', function () {
+    return view('layanan.kegiatan-info');
+})->name('layanan.kegiatan');
+
+Route::get('/layanan-publik/pengaduan', function () {
+    return view('layanan.pengaduan-info');
+})->name('layanan.pengaduan');
 
 // --------------------------
 // LOGIN & REGISTER
@@ -30,6 +55,15 @@ Route::post('/login/admin', [AdminAuthController::class, 'login'])->name('login.
 
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
+// --------------------------
+// FORGOT & RESET PASSWORD
+// --------------------------
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetLink'])->name('password.email');
+
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/surat/{surat}/cetak', [SuratController::class, 'cetak'])->name('surat.cetak');
@@ -104,6 +138,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/kegiatan/{kegiatan}/edit', [KegiatanController::class, 'edit'])->name('admin.kegiatan.edit');
     Route::put('/admin/kegiatan/{kegiatan}', [KegiatanController::class, 'update'])->name('admin.kegiatan.update');
     Route::delete('/admin/kegiatan/{kegiatan}', [KegiatanController::class, 'destroy'])->name('admin.kegiatan.destroy');
+
+    // NOTIFIKASI — ADMIN MELIHAT NOTIFIKASI
+    Route::get('/admin/notifikasi', [NotificationController::class, 'index'])->name('notification.index');
+    Route::post('/admin/notifikasi/{id}/read', [NotificationController::class, 'markAsRead'])->name('notification.read');
+    Route::post('/admin/notifikasi/read-all', [NotificationController::class, 'markAllAsRead'])->name('notification.readAll');
+    Route::post('/admin/notifikasi/{id}/dismiss', [NotificationController::class, 'dismissNotification'])->name('notification.dismiss');
+    Route::delete('/admin/notifikasi/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
+    Route::delete('/admin/notifikasi/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
+    Route::get('/admin/notifikasi/api/unread', [NotificationController::class, 'getUnreadCount'])->name('notification.unread');
 });
 
 // --------------------------

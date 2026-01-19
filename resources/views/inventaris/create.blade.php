@@ -30,7 +30,7 @@
 </style>
 
 <div class="page-inventaris-form">
-    <a href="{{ route('inventaris.index') }}" class="btn btn-secondary mb-3">← Kembali</a>
+    <a href="{{ route('inventaris.index') }}" class="btn btn-secondary mb-3"><i class="fas fa-chevron-left"></i> Kembali</a>
 
     <div class="card-form">
         <h1 class="form-title">Tambah Data Inventaris</h1>

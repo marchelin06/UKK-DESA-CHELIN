@@ -176,9 +176,6 @@
             <i class="fas fa-user-circle"></i>
             Profil Saya
         </h1>
-        <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Kembali
-        </a>
     </div>
 
     {{-- PROFILE CARD --}}

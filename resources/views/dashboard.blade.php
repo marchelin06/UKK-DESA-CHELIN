@@ -37,7 +37,7 @@
         background: linear-gradient(135deg, #fff 0%, #f9fbf7 100%);
         border-radius: 16px;
         border: 2px solid #e8f5e9;
-        padding: 28px;
+        padding: 20px 16px;
         text-align: center;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(27, 94, 32, 0.08);
@@ -47,22 +47,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
     }
 
     .quick-action-card:hover {
         border-color: #43a047;
         box-shadow: 0 8px 24px rgba(67, 160, 71, 0.15);
-        transform: translateY(-6px);
+        transform: translateY(-4px);
     }
 
     .quick-action-icon {
-        font-size: 40px;
-        height: 40px;
+        font-size: 32px;
+        height: 32px;
     }
 
     .quick-action-title {
-        font-size: 15px;
+        font-size: 13px;
         font-weight: 700;
         color: #1b5e20;
     }

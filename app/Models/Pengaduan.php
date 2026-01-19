@@ -12,5 +12,12 @@ class Pengaduan extends Model
         'nama_pengirim',
         'masalah',
         'lokasi',
+        'status',
+        'catatan_admin',
+        'tanggal_ditinjau',
+    ];
+
+    protected $casts = [
+        'tanggal_ditinjau' => 'datetime',
     ];
 }

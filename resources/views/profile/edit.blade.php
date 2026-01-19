@@ -255,7 +255,7 @@
                     <i class="fas fa-save"></i> Simpan Data
                 </button>
                 <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Kembali
+                    <i class="fas fa-chevron-left"></i> Kembali
                 </a>
             </div>
         </form>

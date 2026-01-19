@@ -7,7 +7,7 @@
         min-height: 100vh;
     }
 
-    .login-wrapper {
+    .reset-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -15,13 +15,12 @@
         padding: 20px;
     }
 
-    .login-container {
+    .reset-container {
         width: 100%;
-        max-width: 450px;
-        margin: 0 auto;
+        max-width: 500px;
     }
 
-    .login-card {
+    .reset-card {
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 12px 40px rgba(27, 94, 32, 0.15);
@@ -29,13 +28,21 @@
         border: 1px solid rgba(67, 160, 71, 0.1);
     }
 
-    .login-title {
+    .reset-title {
         text-align: center;
-        margin-bottom: 32px;
-        font-size: 32px;
+        margin-bottom: 15px;
+        font-size: 28px;
         font-weight: 700;
         color: #1b5e20;
         letter-spacing: -0.5px;
+    }
+
+    .reset-subtitle {
+        text-align: center;
+        margin-bottom: 32px;
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
     }
 
     .form-group {
@@ -47,7 +54,7 @@
         margin-bottom: 10px;
         font-weight: 600;
         color: #1b5e20;
-        font-size: 14px;
+        font-size: 15px;
         letter-spacing: 0.3px;
     }
 
@@ -56,11 +63,10 @@
         padding: 14px 16px;
         border: 2px solid #e8f5e9;
         border-radius: 12px;
-        font-size: 14px;
+        font-size: 15px;
         font-family: 'Poppins', sans-serif;
         transition: all 0.3s ease;
         background: #f9fbf7;
-        box-sizing: border-box;
     }
 
     .form-control:focus {
@@ -111,16 +117,7 @@
         border: 1px solid #fbc02d;
     }
 
-    .alert ul {
-        margin: 0;
-        padding-left: 18px;
-    }
-
-    .alert li {
-        margin-bottom: 6px;
-    }
-
-    .btn-login {
+    .btn-reset {
         width: 100%;
         background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
         color: white;
@@ -136,31 +133,31 @@
         margin-top: 8px;
     }
 
-    .btn-login:hover {
+    .btn-reset:hover {
         background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
         box-shadow: 0 8px 24px rgba(67, 160, 71, 0.4);
         transform: translateY(-3px);
     }
 
-    .btn-login:active {
+    .btn-reset:active {
         transform: translateY(-1px);
     }
 
-    .login-footer {
+    .reset-footer {
         text-align: center;
         margin-top: 24px;
         font-size: 14px;
         color: #666;
     }
 
-    .login-footer a {
+    .reset-footer a {
         color: #1a7f5a;
         text-decoration: none;
         font-weight: 700;
         transition: all 0.2s ease;
     }
 
-    .login-footer a:hover {
+    .reset-footer a:hover {
         color: #145c42;
         text-decoration: underline;
     }
@@ -181,58 +178,65 @@
         box-shadow: 0 0 0 5px rgba(239, 83, 80, 0.12);
     }
 
+    .password-info {
+        background: linear-gradient(135deg, #f3e5f5 0%, #e3f2fd 100%);
+        border-left: 4px solid #1b5e20;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        color: #555;
+    }
+
+    .password-info ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    .password-info li {
+        margin-bottom: 4px;
+    }
+
     @media (max-width: 600px) {
-        .login-wrapper {
-            padding: 16px;
-        }
-
-        .login-container {
-            max-width: 100%;
-        }
-
-        .login-card {
+        .reset-card {
             padding: 32px 24px;
-            border-radius: 16px;
         }
 
-        .login-title {
-            font-size: 26px;
-            margin-bottom: 24px;
+        .reset-title {
+            font-size: 24px;
+            margin-bottom: 12px;
         }
 
         .form-group {
             margin-bottom: 18px;
         }
 
-        .form-group label {
-            font-size: 13px;
-        }
-
-        .form-control {
-            padding: 12px 14px;
-            font-size: 14px;
-        }
-
-        .btn-login {
+        .btn-reset {
             padding: 12px 16px;
             font-size: 15px;
         }
     }
 </style>
 
-<div class="login-wrapper">
-    <div class="login-container">
-        <div class="login-card">
-            <h2 class="login-title">Login User</h2>
+<div class="reset-wrapper">
+    <div class="reset-container">
+        <div class="reset-card">
+            <h2 class="reset-title">Atur Ulang Password</h2>
+            <p class="reset-subtitle">
+                Masukkan password baru Anda untuk menyelesaikan proses reset password.
+            </p>
 
-            {{-- Notifikasi Success --}}
-            @if (session('success'))
-                <div class="alert alert-success">
-                    ✓ {{ session('success') }}
-                </div>
-            @endif
+            {{-- Info Box --}}
+            <div class="password-info">
+                <strong>📋 Persyaratan Password:</strong>
+                <ul>
+                    <li>Minimal 6 karakter</li>
+                    <li>Kombinasi huruf, angka, dan simbol lebih aman</li>
+                    <li>Jangan gunakan password yang mudah ditebak</li>
+                </ul>
+            </div>
 
-            {{-- Notifikasi Error Login --}}
+            {{-- Notifikasi Error --}}
             @if (session('error'))
                 <div class="alert alert-danger">
                     ✕ {{ session('error') }}
@@ -242,60 +246,70 @@
             {{-- Error Validasi --}}
             @if ($errors->any())
                 <div class="alert alert-warning">
-                    <ul>
+                    <ul style="margin: 0; padding-left: 18px;">
                         @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            <li style="margin-bottom: 6px;">{{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
             @endif
 
-            <form action="{{ route('login.post') }}" method="POST">
+            <form action="{{ route('password.update') }}" method="POST">
                 @csrf
 
+                <input type="hidden" name="token" value="{{ $token }}">
+
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email Address</label>
                     <input 
                         type="email" 
                         id="email"
                         name="email" 
                         class="form-control @error('email') is-invalid @enderror"
-                        placeholder="Masukkan email"
-                        value="{{ old('email') }}" 
+                        placeholder="Masukkan email Anda"
+                        value="{{ old('email', $email ?? '') }}" 
                         required
                         autofocus>
                     @error('email')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Password Baru</label>
                     <input 
                         type="password" 
                         id="password"
                         name="password" 
                         class="form-control @error('password') is-invalid @enderror"
-                        placeholder="Masukkan password"
+                        placeholder="Masukkan password baru"
                         required>
                     @error('password')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <div style="text-align: right; margin-bottom: 20px;">
-                    <a href="{{ route('password.request') }}" style="color: #1a7f5a; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s ease;">
-                        Lupa Password?
-                    </a>
+                <div class="form-group">
+                    <label for="password_confirmation">Konfirmasi Password</label>
+                    <input 
+                        type="password" 
+                        id="password_confirmation"
+                        name="password_confirmation" 
+                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                        placeholder="Ulangi password baru"
+                        required>
+                    @error('password_confirmation')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <button type="submit" class="btn-login">
-                    Login
+                <button type="submit" class="btn-reset">
+                    Atur Ulang Password
                 </button>
             </form>
 
-            <div class="login-footer">
-                Belum punya akun? <a href="{{ route('register') }}">Daftar di sini</a>
+            <div class="reset-footer">
+                <a href="{{ route('login') }}"><i class="fas fa-chevron-left"></i> Kembali ke Login</a>
             </div>
         </div>
     </div>

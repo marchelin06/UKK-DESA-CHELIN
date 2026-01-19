@@ -260,6 +260,96 @@
         color: #856404;
     }
 
+    /* NOTIFICATION STYLES */
+    .notification-box {
+        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+        border-left: 5px solid #e53935;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #c62828;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .notification-box.warning {
+        background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        border-left-color: #f57c00;
+        color: #e65100;
+    }
+
+    .notification-content {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .notification-title {
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .notification-desc {
+        font-size: 13px;
+        opacity: 0.85;
+        margin-top: 4px;
+    }
+
+    .notification-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #e53935;
+        color: white;
+        border-radius: 50%;
+        min-width: 32px;
+        height: 32px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .notification-badge.warning {
+        background: #f57c00;
+    }
+
+    .notification-action {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+    .notification-button {
+        background: #e53935;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .notification-button:hover {
+        background: #d32f2f;
+        transform: translateX(2px);
+    }
+
+    .notification-button.warning {
+        background: #f57c00;
+    }
+
+    .notification-button.warning:hover {
+        background: #e65100;
+    }
+
     @media (max-width: 768px) {
         .page-dashboard {
             padding: 20px 15px;
@@ -277,11 +367,37 @@
         .section-title {
             font-size: 18px;
         }
+
+        .notification-box {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .notification-action {
+            width: 100%;
+        }
+
+        .notification-button {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
 
 @php
     $admin = $admin ?? Auth::user();
+    
+    // Hitung pengajuan surat yang pending
+    use App\Models\Surat;
+    use App\Models\Pengaduan;
+    use App\Models\Notification;
+    
+    $suratPending = Surat::where('status', 'menunggu')->count();
+    
+    // Hitung notifikasi pengaduan yang belum dibaca (bukan status pengaduan)
+    $pengaduanNotifications = Notification::where('type', 'pengaduan')
+                                          ->where('is_read', false)
+                                          ->count();
 @endphp
 
 <div class="page-dashboard">
@@ -297,32 +413,88 @@
         </div>
     </div>
 
-    {{-- QUICK ACTIONS GRID --}}
-    <div class="dash-grid">
-        <a href="{{ route('admin.surat') }}" class="quick-action-card">
-            <div class="quick-action-icon">📋</div>
-            <div class="quick-action-title">Kelola Surat</div>
-            <div class="quick-action-desc">Proses pengajuan surat warga</div>
-        </a>
+    {{-- NOTIFIKASI TERBARU DARI DATABASE --}}
+    @php
+        $latestNotifications = \App\Models\Notification::where('is_read', false)
+                                                        ->orderByDesc('created_at')
+                                                        ->limit(3)
+                                                        ->get();
+    @endphp
 
-        <a href="{{ route('inventaris.index') }}" class="quick-action-card">
-            <div class="quick-action-icon">📊</div>
-            <div class="quick-action-title">Inventaris</div>
-            <div class="quick-action-desc">Kelola aset desa</div>
-        </a>
+    @foreach($latestNotifications as $notification)
+        <div class="notification-box {{ $notification->type === 'pengaduan' ? 'warning' : '' }}" id="notification-{{ $notification->id }}">
+            <div class="notification-content">
+                <div class="notification-title">
+                    {{ $notification->type === 'surat' ? '📋' : '💬' }} {{ $notification->title }}
+                </div>
+                <div class="notification-desc">
+                    {{ $notification->message }}
+                </div>
+            </div>
+            <div class="notification-action">
+                @if($notification->type === 'surat')
+                    <a href="{{ route('admin.surat.show', $notification->reference_id) }}" class="notification-button" onclick="dismissAndNavigate(event, {{ $notification->id }}, this.href)">
+                        Lihat Surat →
+                    </a>
+                @elseif($notification->type === 'pengaduan')
+                    <a href="{{ route('pengaduan.show', $notification->reference_id) }}" class="notification-button {{ $notification->type === 'pengaduan' ? 'warning' : '' }}" onclick="dismissAndNavigate(event, {{ $notification->id }}, this.href)">
+                        Lihat Pengaduan →
+                    </a>
+                @endif
+                <button type="button" class="notification-button" style="background: #888; margin-left: 8px;" onclick="dismissNotification({{ $notification->id }})">
+                    ✕ Tutup
+                </button>
+            </div>
+        </div>
+    @endforeach
 
-        <a href="{{ route('admin.kegiatan') }}" class="quick-action-card">
-            <div class="quick-action-icon">🎉</div>
-            <div class="quick-action-title">Kegiatan Desa</div>
-            <div class="quick-action-desc">Kelola kegiatan dan acara</div>
-        </a>
+    @if($latestNotifications->count() > 0 && \App\Models\Notification::where('is_read', false)->count() > 3)
+        <div style="text-align: center; margin-bottom: 20px;">
+            <a href="{{ route('notification.index') }}" style="color: #43a047; font-weight: 600; text-decoration: none;">
+                Lihat semua notifikasi ({{ \App\Models\Notification::where('is_read', false)->count() }}) →
+            </a>
+        </div>
+    @endif
 
-        <a href="{{ route('pengaduan.index') }}" class="quick-action-card">
-            <div class="quick-action-icon">💬</div>
-            <div class="quick-action-title">Pengaduan</div>
-            <div class="quick-action-desc">Pantau masukan masyarakat</div>
-        </a>
+    {{-- NOTIFIKASI PENGAJUAN SURAT PENDING --}}
+    @if($suratPending > 0)
+    <div class="notification-box">
+        <div class="notification-content">
+            <div class="notification-title">
+                ⚠️ Ada Pengajuan Surat yang Menunggu
+            </div>
+            <div class="notification-desc">
+                {{ $suratPending }} pengajuan surat dari warga menunggu untuk diproses. Segera periksa dan ambil tindakan!
+            </div>
+        </div>
+        <div class="notification-action">
+            <div class="notification-badge">{{ $suratPending }}</div>
+            <a href="{{ route('admin.surat') }}" class="notification-button">
+                Lihat Pengajuan
+            </a>
+        </div>
     </div>
+    @endif
+
+    {{-- NOTIFIKASI PENGADUAN BARU (DARI DATABASE, BELUM DIBACA) --}}
+    @if($pengaduanNotifications > 0)
+    <div class="notification-box warning">
+        <div class="notification-content">
+            <div class="notification-title">
+                📢 Ada Pengaduan Masyarakat yang Baru
+            </div>
+            <div class="notification-desc">
+                {{ $pengaduanNotifications }} pengaduan baru dari warga. Pastikan untuk ditinjau dan ditindaklanjuti.
+            </div>
+        </div>
+        <div class="notification-action">
+            <div class="notification-badge warning">{{ $pengaduanNotifications }}</div>
+            <a href="{{ route('pengaduan.index') }}" class="notification-button warning">
+                Lihat Pengaduan
+            </a>
+        </div>
+    </div>
+    @endif
 
     {{-- REMINDER BOX --}}
     <div class="info-box">
@@ -369,5 +541,64 @@
         </div>
     </div>
 </div>
+
+<script>
+    function dismissNotification(notificationId) {
+        const notificationElement = document.getElementById('notification-' + notificationId);
+        if (notificationElement) {
+            // Fade out animation
+            notificationElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            notificationElement.style.opacity = '0';
+            notificationElement.style.transform = 'translateX(20px)';
+            
+            // Remove from DOM after animation
+            setTimeout(() => {
+                notificationElement.remove();
+            }, 300);
+            
+            // Mark as read di database via AJAX
+            fetch('{{ url("/admin/notifikasi") }}/' + notificationId + '/dismiss', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || document.querySelector('input[name="_token"]')?.value || '',
+                    'Content-Type': 'application/json',
+                }
+            }).catch(error => console.log('Error:', error));
+        }
+    }
+
+    function dismissAndNavigate(event, notificationId, url) {
+        event.preventDefault();
+        
+        const notificationElement = document.getElementById('notification-' + notificationId);
+        if (notificationElement) {
+            // Fade out animation
+            notificationElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            notificationElement.style.opacity = '0';
+            notificationElement.style.transform = 'translateX(20px)';
+            
+            // Remove from DOM after animation
+            setTimeout(() => {
+                notificationElement.remove();
+            }, 300);
+        }
+        
+        // Mark as read di database via AJAX dan navigate
+        fetch('{{ url("/admin/notifikasi") }}/' + notificationId + '/dismiss', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || document.querySelector('input[name="_token"]')?.value || '',
+                'Content-Type': 'application/json',
+            }
+        }).then(() => {
+            // Navigate setelah AJAX berhasil
+            window.location.href = url;
+        }).catch(error => {
+            console.log('Error:', error);
+            // Navigate tetap jalan meski error
+            window.location.href = url;
+        });
+    }
+</script>
 
 @endsection

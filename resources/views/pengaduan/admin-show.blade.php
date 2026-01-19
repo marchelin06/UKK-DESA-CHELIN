@@ -19,11 +19,11 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 18px;
-        background: linear-gradient(135deg, #f1f8f5 0%, #e8f5e9 100%);
-        color: #1b5e20;
-        border: 2px solid #a5d6a7;
-        border-radius: 25px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.3s ease;
@@ -31,9 +31,10 @@
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
-        color: #1b5e20;
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
         text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
     }
 
     .card {

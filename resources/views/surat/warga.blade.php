@@ -395,7 +395,7 @@
                 </p>
             </div>
             <a href="{{ route('dashboard') }}" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Kembali
+                <i class="fas fa-chevron-left"></i> Kembali
             </a>
         </div>
 
@@ -978,9 +978,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="nik_ayah">NIK Ayah <span style="color:red;">*</span></label>
-                                <input type="text" name="nik_ayah" id="nik_ayah" class="form-control"
+                                <input type="text" name="nik_ayah" id="nik_ayah" class="form-control numeric-only"
                                     value="{{ old('nik_ayah') }}" placeholder="16 digit NIK" maxlength="16"
-                                    inputmode="numeric" required>
+                                    inputmode="numeric" pattern="\d{16}" minlength="16" required>
+                                <small style="color: #888;">Hanya angka, tepat 16 digit</small>
                             </div>
                             <div class="form-group">
                                 <label for="nama_ibu">Nama Ibu</label>
@@ -989,16 +990,18 @@
                             </div>
                             <div class="form-group">
                                 <label for="nik_ibu">NIK Ibu <span style="color:red;">*</span></label>
-                                <input type="text" name="nik_ibu" id="nik_ibu" class="form-control"
+                                <input type="text" name="nik_ibu" id="nik_ibu" class="form-control numeric-only"
                                     value="{{ old('nik_ibu') }}" placeholder="16 digit NIK" maxlength="16"
-                                    inputmode="numeric" required>
+                                    inputmode="numeric" pattern="\d{16}" minlength="16" required>
+                                <small style="color: #888;">Hanya angka, tepat 16 digit</small>
                             </div>
                             <div class="form-group">
                                 <label for="no_kk_kelahiran">Nomor Kartu Keluarga <span
                                         style="color:red;">*</span></label>
-                                <input type="text" name="no_kk_kelahiran" id="no_kk_kelahiran" class="form-control"
+                                <input type="text" name="no_kk_kelahiran" id="no_kk_kelahiran" class="form-control numeric-only"
                                     value="{{ old('no_kk_kelahiran') }}" placeholder="16 digit No KK" maxlength="16"
-                                    inputmode="numeric" required>
+                                    inputmode="numeric" pattern="\d{16}" minlength="16" required>
+                                <small style="color: #888;">Hanya angka, tepat 16 digit</small>
                             </div>
                             <div class="form-group">
                                 <label for="alamat_orangtua">Alamat Orang Tua</label>
@@ -1303,6 +1306,17 @@
                                         Lainnya
                                     </option>
                                 </select>
+                            </div>
+
+                            <h4 style="margin-top:15px; margin-bottom:10px; color:#1b5e20; font-weight:600;">Lampiran
+                                Dokumen</h4>
+
+                            <div class="form-group">
+                                <label for="lampiran_tanah">Lampiran Dokumen Pendukung <span
+                                        style="color:red;">*</span></label>
+                                <input type="file" name="lampiran_tanah" id="lampiran_tanah"
+                                    class="form-control" required>
+                                <small style="color:#888;">Upload dokumen surat tanah, sertifikat, atau bukti kepemilikan tanah lainnya. Format: PDF, JPG, PNG. Max: 5MB</small>
                             </div>
 
                             <h4 style="margin-top:15px; margin-bottom:10px; color:#1b5e20; font-weight:600;">Batas-Batas
@@ -1641,8 +1655,15 @@
 
             // INPUT FILTERING - Numbers only
             const nikSelectors =
-                '#nik, #nik_usaha, #nik_ktp, #nik_almarhum, #nik_sktm, #nik_calon_suami, #nik_calon_istri, #nik_belum_menikah';
+                '#nik, #nik_usaha, #nik_ktp, #nik_almarhum, #nik_sktm, #nik_calon_suami, #nik_calon_istri, #nik_belum_menikah, #nik_ayah, #nik_ibu';
             document.querySelectorAll(nikSelectors).forEach(input => {
+                input.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16);
+                });
+            });
+
+            const kkSelectors = '#no_kk_kelahiran';
+            document.querySelectorAll(kkSelectors).forEach(input => {
                 input.addEventListener('input', function() {
                     this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16);
                 });

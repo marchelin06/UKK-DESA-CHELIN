@@ -113,6 +113,28 @@
         color: #1565c0;
     }
 
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .btn-back:hover {
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -138,6 +160,13 @@
 </style>
 
 <div class="page-content">
+    {{-- BACK BUTTON --}}
+    <div class="page-back" style="margin-bottom: 20px;">
+        <a href="{{ route('admin.dashboard') }}" class="btn-back">
+            <i class="fas fa-chevron-left"></i> Kembali ke Dashboard
+        </a>
+    </div>
+
     {{-- HEADER --}}
     <div class="page-header">
         <div>

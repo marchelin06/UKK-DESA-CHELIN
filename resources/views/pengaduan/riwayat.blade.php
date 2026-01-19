@@ -220,7 +220,7 @@
             </p>
         </div>
         <a href="{{ route('dashboard') }}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Kembali
+            <i class="fas fa-chevron-left"></i> Kembali
         </a>
     </div>
 

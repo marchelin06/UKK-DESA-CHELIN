@@ -43,6 +43,28 @@
         color: white;
     }
 
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 14px;
+    }
+
+    .btn-back:hover {
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+    }
+
     .filter-section {
         background: #f5f5f5;
         padding: 20px;
@@ -285,10 +307,23 @@
 <div class="kegiatan-container">
     {{-- HEADER --}}
     <div class="kegiatan-header">
-        <h1>📅 Kegiatan Desa</h1>
-        @if(Auth::check() && Auth::user()->role === 'admin')
-            <a href="{{ route('admin.kegiatan.create') }}" class="btn-primary-custom">+ Tambah Kegiatan</a>
-        @endif
+        <div>
+            <h1>📅 Kegiatan Desa</h1>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            @if(Auth::check() && Auth::user()->role === 'admin')
+                <a href="{{ route('admin.dashboard') }}" class="btn-back">
+                    <i class="fas fa-chevron-left"></i> Kembali
+                </a>
+            @else
+                <a href="{{ route('dashboard') }}" class="btn-back">
+                    <i class="fas fa-chevron-left"></i> Kembali
+                </a>
+            @endif
+            @if(Auth::check() && Auth::user()->role === 'admin')
+                <a href="{{ route('admin.kegiatan.create') }}" class="btn-primary-custom">+ Tambah Kegiatan</a>
+            @endif
+        </div>
     </div>
 
     {{-- NOTIFIKASI --}}

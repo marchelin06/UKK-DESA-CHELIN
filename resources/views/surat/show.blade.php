@@ -335,7 +335,7 @@
 
 <div class="page-detail-surat">
     <a href="{{ route('admin.surat') }}" class="btn-back">
-        <span>←</span> Kembali ke daftar pengajuan
+        <i class="fas fa-chevron-left"></i> Kembali ke daftar pengajuan
     </a>
 
     <div class="page-header">
@@ -553,7 +553,7 @@
                     ✕ Tolak Pengajuan
                 </button>
                 <a href="{{ route('admin.surat') }}" class="btn btn-secondary">
-                    ← Kembali ke Daftar
+                    <i class="fas fa-chevron-left"></i> Kembali ke Daftar
                 </a>
             </div>
         </form>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class PengaduanController extends Controller
@@ -35,7 +36,16 @@ class PengaduanController extends Controller
         ]);
 
         // Simpan ke database
-        Pengaduan::create($validated);
+        $pengaduan = Pengaduan::create($validated);
+
+        // Buat notifikasi untuk admin
+        Notification::create([
+            'type'         => 'pengaduan',
+            'reference_id' => $pengaduan->id,
+            'title'        => 'Pengaduan Baru',
+            'message'      => $validated['nama_pengirim'] . ' telah mengirimkan pengaduan mengenai ' . substr($validated['masalah'], 0, 50) . '...',
+            'is_read'      => false,
+        ]);
 
         return redirect()->back()->with('success', 'Pengaduan Anda telah berhasil disampaikan. Terima kasih atas masukan Anda.');
     }
@@ -55,6 +65,12 @@ class PengaduanController extends Controller
     public function show($id)
     {
         $pengaduan = Pengaduan::findOrFail($id);
+        
+        // Tandai notifikasi sebagai sudah dibaca
+        Notification::where('type', 'pengaduan')
+                    ->where('reference_id', $id)
+                    ->update(['is_read' => true]);
+        
         return view('pengaduan.admin-show', ['pengaduan' => $pengaduan]);
     }
 

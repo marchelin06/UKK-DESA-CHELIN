@@ -33,7 +33,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <a href="{{ route('home') }}" class="btn-back" style="margin-bottom: 30px;">
-                <i class="fas fa-arrow-left"></i> Kembali
+                <i class="fas fa-chevron-left"></i> Kembali
             </a>
 
             <div class="card card-custom">

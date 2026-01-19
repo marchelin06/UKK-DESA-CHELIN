@@ -57,28 +57,26 @@
     }
 
     .btn-back {
-        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
-        color: white;
-        border: none;
-        padding: 12px 28px;
-        border-radius: 25px;
-        font-weight: 600;
-        cursor: pointer;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
         font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
-        box-shadow: 0 6px 18px rgba(27, 94, 32, 0.4);
-        transform: translateY(-2px);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
         color: white;
         text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
     }
 
     .alert {
@@ -245,12 +243,18 @@
             <p class="page-subtitle">Kelola aset dan barang milik desa</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <a href="{{ route('admin.dashboard') }}" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
-            <a href="{{ route('inventaris.create') }}" class="btn-tambah">
-                <i class="fas fa-plus"></i> Tambah Barang
-            </a>
+            @if(Auth::check() && Auth::user()->role === 'admin')
+                <a href="{{ route('admin.dashboard') }}" class="btn-back">
+                    <i class="fas fa-chevron-left"></i> Kembali
+                </a>
+                <a href="{{ route('inventaris.create') }}" class="btn-tambah">
+                    <i class="fas fa-plus"></i> Tambah Barang
+                </a>
+            @else
+                <a href="{{ route('dashboard') }}" class="btn-back">
+                    <i class="fas fa-chevron-left"></i> Kembali
+                </a>
+            @endif
         </div>
     </div>
 

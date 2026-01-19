@@ -16,17 +16,22 @@
     }
 
     .detail-header a {
-        background: #f5f5f5;
-        padding: 10px 15px;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        padding: 10px 24px;
+        border-radius: 30px;
         text-decoration: none;
-        color: #1b5e20;
+        color: white;
         font-weight: 600;
         transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .detail-header a:hover {
-        background: #e0e0e0;
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
     }
 
     .detail-header h1 {
@@ -184,12 +189,13 @@
     }
 
     .btn-back {
-        background: #f5f5f5;
-        color: #1b5e20;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
     }
 
     .btn-back:hover {
-        background: #e0e0e0;
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
     }
 
     .btn-edit {
@@ -264,7 +270,11 @@
 <div class="detail-container">
     {{-- HEADER --}}
     <div class="detail-header">
-        <a href="{{ route('kegiatan.index') }}">← Kembali</a>
+        @if(Auth::check() && Auth::user()->role === 'admin')
+            <a href="{{ route('admin.kegiatan.index') }}"><i class="fas fa-chevron-left"></i> Kembali</a>
+        @else
+            <a href="{{ route('dashboard') }}"><i class="fas fa-chevron-left"></i> Kembali</a>
+        @endif
         <h1>{{ $kegiatan->judul }}</h1>
     </div>
 

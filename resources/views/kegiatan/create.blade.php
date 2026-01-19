@@ -16,17 +16,26 @@
     }
 
     .form-header a {
-        background: #f5f5f5;
-        padding: 10px 15px;
-        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
         text-decoration: none;
-        color: #1b5e20;
         font-weight: 600;
+        font-size: 14px;
         transition: all 0.3s ease;
+        cursor: pointer;
     }
 
     .form-header a:hover {
-        background: #e0e0e0;
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
     }
 
     .form-header h1 {
@@ -176,7 +185,9 @@
 <div class="form-container">
     {{-- HEADER --}}
     <div class="form-header">
-        <a href="{{ route('kegiatan.index') }}">← Kembali</a>
+        <a href="{{ route('kegiatan.index') }}">
+            <i class="fas fa-chevron-left"></i> Kembali
+        </a>
         <h1>Tambah Kegiatan Baru</h1>
     </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Surat;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -237,6 +238,7 @@ class SuratController extends Controller
         // === SURAT TANAH ===
         elseif ($jenisSurat === 'Surat Keterangan Tanah') {
             $baseRules = array_merge($baseRules, [
+                'lampiran_tanah' => 'required|file|mimes:jpg,jpeg,png,pdf|max:5120',
                 'lokasi_tanah' => 'required|string',
                 'luas_tanah' => 'required|numeric|min:1',
                 'peruntukan' => 'required|string',
@@ -247,6 +249,10 @@ class SuratController extends Controller
                 'status_tanah' => 'required|string',
             ]);
             $messages = array_merge($messages, [
+                'lampiran_tanah.required' => 'Lampiran dokumen tanah harus diupload',
+                'lampiran_tanah.file' => 'Lampiran harus berupa file',
+                'lampiran_tanah.mimes' => 'Format file harus JPG, PNG, atau PDF',
+                'lampiran_tanah.max' => 'Ukuran file maksimal 5MB',
                 'lokasi_tanah.required' => 'Lokasi tanah harus diisi',
                 'luas_tanah.required' => 'Luas tanah harus diisi',
                 'peruntukan.required' => 'Peruntukan tanah harus diisi',
@@ -288,10 +294,27 @@ class SuratController extends Controller
         $dataTambahan = [];
         $lampiranPath = null;
 
-        // simpan lampiran (opsional)
-        if ($request->hasFile('lampiran')) {
-            $lampiranPath = $request->file('lampiran')->store('lampiran_surat', 'public');
-            $dataTambahan['lampiran'] = $lampiranPath;
+        // simpan lampiran (opsional) - cek berbagai nama field berdasarkan jenis surat
+        $lampiranFields = [
+            'lampiran',
+            'lampiran_kelahiran',
+            'lampiran_kematian',
+            'lampiran_nikah',
+            'lampiran_cerai',
+            'lampiran_domisili',
+            'lampiran_usaha',
+            'lampiran_ktp',
+            'lampiran_skck',
+            'lampiran_catin',
+            'lampiran_tanah',
+        ];
+
+        foreach ($lampiranFields as $field) {
+            if ($request->hasFile($field)) {
+                $lampiranPath = $request->file($field)->store('lampiran_surat', 'public');
+                $dataTambahan['lampiran'] = $lampiranPath;
+                break; // hanya simpan satu lampiran
+            }
         }
 
         // Simpan semua field data tambahan berdasarkan jenis surat
@@ -304,6 +327,20 @@ class SuratController extends Controller
             'status'         => 'menunggu',
             'tipe_pengajuan' => 'online',
             'data_tambahan'  => !empty($dataTambahan) ? $dataTambahan : null,
+        ]);
+
+        // Buat notifikasi untuk admin
+        $user = Auth::user();
+        Notification::create([
+            'type'         => 'surat',
+            'reference_id' => Surat::where('user_id', Auth::id())
+                                    ->where('jenis_surat', $request->jenis_surat)
+                                    ->orderByDesc('created_at')
+                                    ->first()
+                                    ->id,
+            'title'        => 'Pengajuan Surat Baru',
+            'message'      => $user->name . ' telah mengajukan ' . $request->jenis_surat,
+            'is_read'      => false,
         ]);
 
         return redirect()->route('surat.index')->with('success', 'Pengajuan surat berhasil dikirim! Silakan lihat riwayat pengajuan Anda di bawah.');
@@ -457,6 +494,11 @@ class SuratController extends Controller
     public function show($id)
     {
         $surat = Surat::with('user')->findOrFail($id);
+
+        // Tandai notifikasi sebagai sudah dibaca
+        Notification::where('type', 'surat')
+                    ->where('reference_id', $id)
+                    ->update(['is_read' => true]);
 
         // dd($surat->data_tambahan['lampiran']);
 

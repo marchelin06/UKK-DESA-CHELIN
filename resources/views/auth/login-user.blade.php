@@ -18,71 +18,125 @@
         }
 
         .bg-primary {
-            background-color: #2E86C1;
+            background-color: #1b5e20;
         }
 
         .btn-primary {
-            background-color: #2E86C1;
+            background: linear-gradient(135deg, #43a047 0%, #66bb6a 100%);
         }
 
         .btn-primary:hover {
-            background-color: #21618C;
+            background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
+            box-shadow: 0 8px 24px rgba(67, 160, 71, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #43a047;
+            box-shadow: 0 0 0 5px rgba(67, 160, 71, 0.12);
+        }
+
+        @media (max-width: 600px) {
+            .login-wrapper {
+                padding: 16px;
+            }
+
+            .login-container {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 
 <body class="bg-gray-100">
 
-    <div class="flex items-center justify-center min-h-screen">
-        <div class="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="w-full bg-white shadow-lg rounded-xl p-8">
 
-            <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Login Pengguna</h1>
+                <h1 class="text-3xl font-bold text-center text-green-800 mb-8">Login User</h1>
 
-            {{-- Pesan sukses --}}
-            @if (session('success'))
-                <div class="bg-green-100 text-green-700 p-3 rounded mb-3 text-sm">
-                    {{ session('success') }}
-                </div>
-            @endif
+                {{-- Pesan sukses --}}
+                @if (session('success'))
+                    <div class="bg-green-100 text-green-700 p-4 rounded-lg mb-4 text-sm border-l-4 border-green-500">
+                        ✓ {{ session('success') }}
+                    </div>
+                @endif
 
-            {{-- Pesan error --}}
-            @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-3 rounded mb-3 text-sm">
-                    {{ $errors->first() }}
-                </div>
-            @endif
+                {{-- Pesan error --}}
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4 text-sm border-l-4 border-red-500">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-            <form action="{{ route('login.user.post') }}" method="POST">
-                @csrf
+                <form action="{{ route('login.post') }}" method="POST">
+                    @csrf
 
-                {{-- Email --}}
-                <div class="mb-4">
-                    <label class="block font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" name="email" value="{{ old('email') }}"
-                        class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        placeholder="Masukkan email" required>
-                </div>
+                    {{-- Email --}}
+                    <div class="mb-6">
+                        <label class="block font-semibold text-green-800 mb-2 text-sm">Email</label>
+                        <input type="email" name="email" value="{{ old('email') }}"
+                            class="form-control w-full border-2 border-green-200"
+                            placeholder="Masukkan email" required autofocus>
+                    </div>
 
-                {{-- Password --}}
-                <div class="mb-4">
-                    <label class="block font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" name="password"
-                        class="w-full p-3 border rounded focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        placeholder="Masukkan password" required>
-                </div>
+                    {{-- Password --}}
+                    <div class="mb-6">
+                        <label class="block font-semibold text-green-800 mb-2 text-sm">Password</label>
+                        <input type="password" name="password"
+                            class="form-control w-full border-2 border-green-200"
+                            placeholder="Masukkan password" required>
+                    </div>
 
-                {{-- Tombol Login --}}
-                <button type="submit"
-                    class="w-full btn-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                    Login
-                </button>
+                    {{-- Lupa Password --}}
+                    <div class="text-right mb-6">
+                        <a href="{{ route('password.request') }}" class="text-green-600 hover:text-green-800 text-sm font-semibold hover:underline transition">
+                            Lupa Password?
+                        </a>
+                    </div>
 
-                {{-- Link ke Register --}}
-                <p class="text-center text-sm text-gray-600 mt-4">
-                    Belum punya akun?
-                    <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Daftar di sini</a>
-                </p>
-            </form>
+                    {{-- Tombol Login --}}
+                    <button type="submit"
+                        class="w-full btn-primary text-white py-3 rounded-lg font-semibold hover:opacity-90 transition duration-300">
+                        Login
+                    </button>
+
+                    {{-- Link ke Register --}}
+                    <p class="text-center text-sm text-gray-600 mt-6">
+                        Belum punya akun?
+                        <a href="{{ route('register') }}" class="text-green-600 font-semibold hover:text-green-800 hover:underline transition">Daftar di sini</a>
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
 
