@@ -106,7 +106,7 @@
         .form-select:focus,
         textarea:focus {
             outline: none;
-            border-color: #1a7f5a;
+            border-color: #2e7d32;
             box-shadow: 0 0 0 2px rgba(26, 127, 90, 0.15);
         }
 
@@ -130,7 +130,7 @@
         }
 
         .btn-primary {
-            background: #1a7f5a !important;
+            background: #2e7d32 !important;
             border: none !important;
             color: #fff !important;
             padding: 12px 24px !important;
@@ -150,7 +150,7 @@
         }
 
         .btn-primary:hover:not(:disabled) {
-            background: #145c42 !important;
+            background: #0d3a1a !important;
             box-shadow: 0 4px 8px rgba(20, 92, 66, 0.3) !important;
             transform: translateY(-2px) !important;
         }
@@ -167,7 +167,7 @@
         }
 
         .btn-primary:focus {
-            outline: 2px solid #1a7f5a !important;
+            outline: 2px solid #2e7d32 !important;
             outline-offset: 2px !important;
         }
 
@@ -312,14 +312,14 @@
         .catatan-admin-link {
             cursor: help;
             text-decoration: underline dotted;
-            color: #1a7f5a;
+            color: #2e7d32;
             position: relative;
             display: inline-block;
             transition: all 0.2s ease;
         }
 
         .catatan-admin-link:hover {
-            color: #145c42;
+            color: #0d3a1a;
             font-weight: 500;
         }
 
@@ -523,7 +523,7 @@
                             <div class="form-group">
                                 <label for="tanggal_mulai_tinggal">Tanggal Mulai Tinggal</label>
                                 <input type="date" name="tanggal_mulai_tinggal" id="tanggal_mulai_tinggal"
-                                    class="form-control" value="{{ old('tanggal_mulai_tinggal') }}">
+                                    class="form-control" value="{{ old('tanggal_mulai_tinggal') }}" max="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="lama_tinggal">Lama Tinggal (dalam bulan)</label>
@@ -625,7 +625,7 @@
                             <div class="form-group">
                                 <label for="tanggal_mulai_usaha">Tanggal Mulai Usaha</label>
                                 <input type="date" name="tanggal_mulai_usaha" id="tanggal_mulai_usaha"
-                                    class="form-control" value="{{ old('tanggal_mulai_usaha') }}">
+                                    class="form-control" value="{{ old('tanggal_mulai_usaha') }}" max="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="lama_usaha">Lama Usaha Berjalan (dalam bulan)</label>
@@ -821,7 +821,7 @@
                             <div class="form-group">
                                 <label for="tanggal_lahir_ktp">Tanggal Lahir</label>
                                 <input type="date" name="tanggal_lahir_ktp" id="tanggal_lahir_ktp"
-                                    class="form-control" value="{{ old('tanggal_lahir_ktp') }}">
+                                    class="form-control" value="{{ old('tanggal_lahir_ktp') }}" max="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="jenis_kelamin_ktp">Jenis Kelamin</label>
@@ -1187,7 +1187,7 @@
                             <div class="form-group">
                                 <label for="tanggal_nikah">Rencana Tanggal Nikah</label>
                                 <input type="date" name="tanggal_nikah" id="tanggal_nikah"
-                                    class="form-control date-input" value="{{ old('tanggal_nikah') }}">
+                                    class="form-control date-input" value="{{ old('tanggal_nikah') }}" min="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="tempat_nikah">Tempat Akad Nikah</label>
@@ -1418,12 +1418,12 @@
                             <div class="form-group">
                                 <label for="tanggal_rapat">Tanggal Rapat</label>
                                 <input type="date" name="tanggal_rapat" id="tanggal_rapat"
-                                    class="form-control date-input" value="{{ old('tanggal_rapat') }}">
+                                    class="form-control date-input" value="{{ old('tanggal_rapat') }}" min="{{ date('Y-m-d') }}">
                             </div>
                             <div class="form-group">
                                 <label for="waktu_rapat">Waktu Rapat</label>
                                 <input type="time" name="waktu_rapat" id="waktu_rapat" class="form-control"
-                                    value="{{ old('waktu_rapat') }}">
+                                    value="{{ old('waktu_rapat') }}" min="{{ date('H:i') }}">
                             </div>
                             <div class="form-group">
                                 <label for="tempat_rapat">Tempat Rapat</label>
@@ -1682,6 +1682,28 @@
                     this.value = this.value.replace(/[^0-9]/g, '');
                 });
             });
+
+            // Validasi untuk Surat Undangan Rapat: Jika waktu lebih awal dari jam sekarang, ubah tanggal +1 hari
+            const tanggalRapat = document.getElementById('tanggal_rapat');
+            const waktuRapat = document.getElementById('waktu_rapat');
+
+            if (waktuRapat) {
+                waktuRapat.addEventListener('change', function() {
+                    const today = new Date();
+                    const selectedDate = new Date(tanggalRapat.value);
+                    const selectedTime = this.value;
+                    const currentTime = today.getHours().toString().padStart(2, '0') + ':' + 
+                                       today.getMinutes().toString().padStart(2, '0');
+
+                    // Jika tanggal sama dengan hari ini dan waktu lebih awal dari jam sekarang
+                    if (tanggalRapat.value === today.toISOString().split('T')[0] && selectedTime < currentTime) {
+                        // Ubah tanggal menjadi besok
+                        let tomorrow = new Date(today);
+                        tomorrow.setDate(tomorrow.getDate() + 1);
+                        tanggalRapat.value = tomorrow.toISOString().split('T')[0];
+                    }
+                });
+            }
         });
     </script>
 @endsection

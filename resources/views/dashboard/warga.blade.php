@@ -22,7 +22,7 @@
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
         color: white;
         transform: translateX(-4px);
         box-shadow: 0 6px 16px rgba(27, 94, 32, 0.3);

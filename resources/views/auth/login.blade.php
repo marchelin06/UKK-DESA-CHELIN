@@ -154,14 +154,14 @@
     }
 
     .login-footer a {
-        color: #1a7f5a;
+        color: #2e7d32;
         text-decoration: none;
         font-weight: 700;
         transition: all 0.2s ease;
     }
 
     .login-footer a:hover {
-        color: #145c42;
+        color: #0d3a1a;
         text-decoration: underline;
     }
 
@@ -284,7 +284,7 @@
                 </div>
 
                 <div style="text-align: right; margin-bottom: 20px;">
-                    <a href="{{ route('password.request') }}" style="color: #1a7f5a; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s ease;">
+                    <a href="{{ route('password.request') }}" style="color: #2e7d32; text-decoration: none; font-size: 14px; font-weight: 600; transition: all 0.2s ease;">
                         Lupa Password?
                     </a>
                 </div>

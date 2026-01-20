@@ -60,6 +60,6 @@
 
 {{-- Footer --}}
 <footer class="bg-blue-700 text-white text-center py-4 mt-12">
-    &copy; {{ date('Y') }} Sistem Informasi Desa Bangah. All rights reserved.
+    &copy; {{ date('Y') }} l rights reserved.
 </footer>
 @endsection

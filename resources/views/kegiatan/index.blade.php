@@ -3,9 +3,9 @@
 @section('content')
 <style>
     .kegiatan-container {
-        max-width: 1200px;
-        margin: 30px auto;
-        padding: 0 15px;
+        max-width: 1000px;
+        margin: 40px auto 0;
+        padding: 0 20px;
     }
 
     .kegiatan-header {
@@ -20,7 +20,7 @@
     .kegiatan-header h1 {
         font-size: 28px;
         font-weight: 700;
-        color: #1b3b2f;
+        color: #1b5e20;
         margin: 0;
     }
 

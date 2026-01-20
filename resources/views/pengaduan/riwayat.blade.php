@@ -36,7 +36,7 @@
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
         color: white;
         transform: translateX(-3px);
     }
@@ -78,7 +78,7 @@
     }
 
     table thead {
-        background: linear-gradient(135deg, #1b5e20 0%, #4caf50 100%);
+        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
         color: white;
     }
 
@@ -158,7 +158,7 @@
 
     .btn-primary {
         display: inline-block;
-        background: linear-gradient(135deg, #1b5e20 0%, #4caf50 100%);
+        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
         border: none;
         color: #fff;
         padding: 10px 20px;

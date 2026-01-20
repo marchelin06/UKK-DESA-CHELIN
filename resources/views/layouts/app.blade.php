@@ -207,8 +207,10 @@
             text-align: center;
             background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
             color: #ffffff;
-            padding: 12px 10px;
+            padding: 20px 20px;
             font-size: 14px;
+            width: 100%;
+            margin-top: auto;
         }
 
         @media (max-width: 768px) {
@@ -302,7 +304,7 @@
         }
 
         .btn-green:hover {
-            background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+            background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
             color: #fff;
             box-shadow: 0 6px 18px rgba(27, 94, 32, 0.4);
             transform: translateY(-2px);
@@ -377,7 +379,7 @@
         }
 
         .btn-primary-rounded:hover {
-            background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+            background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
             color: #fff;
             box-shadow: 0 6px 18px rgba(27, 94, 32, 0.4);
             transform: translateY(-2px);

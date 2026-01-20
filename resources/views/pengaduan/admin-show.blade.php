@@ -7,7 +7,7 @@
     .page-content {
         max-width: 900px;
         margin: 0 auto;
-        padding: 30px 20px;
+        padding: 40px 20px;
         font-family: 'Poppins', sans-serif;
     }
 

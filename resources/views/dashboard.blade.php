@@ -4,9 +4,9 @@
 @section('content')
 <style>
     .page-dashboard {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 30px 20px;
+        padding: 40px 20px;
         font-family: 'Poppins', sans-serif;
     }
 
@@ -15,7 +15,7 @@
     }
 
     .dash-greeting {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: 700;
         color: #1b5e20;
         margin-bottom: 8px;
@@ -23,7 +23,7 @@
 
     .dash-subtext {
         font-size: 15px;
-        color: #666;
+        color: #888;
     }
 
     .dash-grid {
@@ -257,10 +257,6 @@
         </a>
     </div>
 
-    {{-- HELPFUL INFO --}}
-    <div style="background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%); border-left: 4px solid #fbc02d; border-radius: 12px; padding: 16px; margin-bottom: 20px; font-size: 14px; color: #856404;">
-        <strong>💡 Tip:</strong> Gunakan menu <strong>Layanan Publik</strong> di sidebar kiri untuk mengakses semua fitur dengan mudah.
-    </div>
 </div>
 
 @endsection

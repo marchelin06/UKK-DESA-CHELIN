@@ -57,14 +57,14 @@
         padding: 5px 10px;
         border-radius: 5px;
         border: none;
-        background: #1a7f5a;
+        background: #2e7d32;
         color: #fff;
         font-size: 12px;
         cursor: pointer;
         text-decoration: none;
     }
     .btn-detail:hover {
-        background: #145c42;
+        background: #0d3a1a;
     }
     .badge-lampiran {
         background: #e3f2fd;

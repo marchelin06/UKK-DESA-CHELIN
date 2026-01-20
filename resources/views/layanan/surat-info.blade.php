@@ -81,17 +81,19 @@
         </div>
 
         {{-- CTA Box --}}
-        <div style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f5 100%); border-left: 4px solid #1b5e20; border-radius: 8px; padding: 24px; text-align: center;">
-            <p style="font-size: 15px; color: #666; margin-bottom: 20px; line-height: 1.6;">
+        @guest
+        <div style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f5 100%); border-left: 4px solid #1b5e20; border-radius: 8px; padding: 16px; text-align: center;">
+            <p style="font-size: 13px; color: #666; margin-bottom: 12px; line-height: 1.5; margin-top: 0;">
                 Siap menggunakan layanan surat menyurat digital? 
             </p>
-            <a href="{{ route('login') }}" style="display: inline-block; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-right: 12px;">
+            <a href="{{ route('login') }}" style="display: inline-block; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; margin-right: 8px; font-size: 12px;">
                 Login Sekarang
             </a>
-            <a href="{{ route('register') }}" style="display: inline-block; background: #43a047; color: white; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+            <a href="{{ route('register') }}" style="display: inline-block; background: #43a047; color: white; padding: 8px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 12px;">
                 Daftar Akun
             </a>
         </div>
+        @endguest
     </div>
 </div>
 @endsection

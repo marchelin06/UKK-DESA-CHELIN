@@ -5,7 +5,7 @@
     .page-notification {
         max-width: 1000px;
         margin: 0 auto;
-        padding: 30px 20px;
+        padding: 40px 20px;
         font-family: 'Poppins', sans-serif;
     }
 
@@ -62,7 +62,7 @@
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
     }
 
     .notification-list {

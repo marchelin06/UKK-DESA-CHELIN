@@ -81,6 +81,7 @@
         </div>
 
         {{-- CTA Box --}}
+        @guest
         <div style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f5 100%); border-left: 4px solid #1b5e20; border-radius: 8px; padding: 24px; text-align: center;">
             <p style="font-size: 15px; color: #666; margin-bottom: 20px; line-height: 1.6;">
                 Ingin mengetahui kegiatan desa yang akan datang? Login sekarang!
@@ -92,6 +93,7 @@
                 Daftar Akun
             </a>
         </div>
+        @endguest
     </div>
 </div>
 @endsection

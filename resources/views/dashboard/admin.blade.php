@@ -4,9 +4,9 @@
 @section('content')
 <style>
     .page-dashboard {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 30px 20px;
+        padding: 40px 20px;
         font-family: 'Poppins', sans-serif;
     }
 
@@ -36,7 +36,7 @@
     }
 
     .btn-back:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
         color: white;
         transform: translateX(-3px);
     }
@@ -228,7 +228,7 @@
     .service-link {
         font-size: 13px;
         font-weight: 700;
-        color: #1a7f5a;
+        color: #2e7d32;
         text-decoration: none;
         transition: all 0.3s ease;
         display: inline-flex;
@@ -236,7 +236,7 @@
     }
 
     .service-link:hover {
-        color: #145c42;
+        color: #0d3a1a;
         transform: translateX(4px);
     }
 
@@ -262,13 +262,13 @@
 
     /* NOTIFICATION STYLES */
     .notification-box {
-        background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-        border-left: 5px solid #e53935;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-left: 5px solid #1976d2;
         border-radius: 12px;
         padding: 18px;
         margin-bottom: 20px;
         font-size: 14px;
-        color: #c62828;
+        color: #0d47a1;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -306,7 +306,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #e53935;
+        background: #1976d2;
         color: white;
         border-radius: 50%;
         min-width: 32px;
@@ -325,7 +325,7 @@
     }
 
     .notification-button {
-        background: #e53935;
+        background: #1976d2;
         color: white;
         padding: 8px 14px;
         border-radius: 6px;
@@ -338,7 +338,7 @@
     }
 
     .notification-button:hover {
-        background: #d32f2f;
+        background: #1565c0;
         transform: translateX(2px);
     }
 

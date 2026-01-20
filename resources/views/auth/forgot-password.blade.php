@@ -151,14 +151,14 @@
     }
 
     .forgot-footer a {
-        color: #1a7f5a;
+        color: #2e7d32;
         text-decoration: none;
         font-weight: 700;
         transition: all 0.2s ease;
     }
 
     .forgot-footer a:hover {
-        color: #145c42;
+        color: #0d3a1a;
         text-decoration: underline;
     }
 

@@ -5,9 +5,9 @@
 @section('content')
 <style>
     .page-content {
-        max-width: 1200px;
+        max-width: 1000px;
         margin: 0 auto;
-        padding: 30px 20px;
+        padding: 40px 20px;
         font-family: 'Poppins', sans-serif;
     }
 
@@ -162,12 +162,12 @@
     }
 
     .btn-detail {
-        background: linear-gradient(135deg, #1a7f5a 0%, #2e7d32 100%);
+        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
         color: #fff;
     }
 
     .btn-detail:hover {
-        background: linear-gradient(135deg, #145c42 0%, #1a7f5a 100%);
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
         box-shadow: 0 4px 12px rgba(26, 127, 90, 0.3);
         color: white;
         text-decoration: none;

@@ -32,13 +32,13 @@
         margin-bottom: 20px;
         font-size: 14px;
         text-decoration: none;
-        color: #1a7f5a;
+        color: #2e7d32;
         font-weight: 500;
         transition: all 0.2s ease;
     }
 
     .btn-back:hover {
-        color: #145c42;
+        color: #0d3a1a;
         gap: 10px;
     }
 
@@ -147,32 +147,39 @@
 
     .data-tambahan-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
     }
 
     .data-item {
-        background: #ffffff;
-        border-radius: 8px;
-        padding: 12px;
-        border: 1px solid #c8e6c9;
+        background: linear-gradient(135deg, #f8f9f7 0%, #f1f8f0 100%);
+        border-radius: 10px;
+        padding: 16px;
+        border: 1px solid rgba(67, 160, 71, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .data-item:hover {
+        border-color: rgba(67, 160, 71, 0.3);
+        box-shadow: 0 4px 12px rgba(67, 160, 71, 0.1);
     }
 
     .data-item-label {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        color: #558b2f;
+        color: #1b5e20;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 6px;
     }
 
     .data-item-value {
-        font-size: 14px;
+        font-size: 15px;
         color: #333;
         word-break: break-word;
         line-height: 1.5;
-        white-space: pre-wrap;
+        text-align: left !important;
     }
 
     .lampiran-preview {
@@ -216,7 +223,7 @@
 
     .form-control:focus, .form-select:focus, textarea:focus {
         outline: none;
-        border-color: #1a7f5a;
+        border-color: #2e7d32;
         box-shadow: 0 0 0 3px rgba(26, 127, 90, 0.1);
     }
 
@@ -504,6 +511,7 @@
                        name="estimasi_selesai"
                        id="estimasi_selesai"
                        class="form-control"
+                       min="{{ now()->format('Y-m-d\TH:i') }}"
                        value="{{ $surat->estimasi_selesai ? $surat->estimasi_selesai->format('Y-m-d\TH:i') : '' }}">
                 <small class="text-muted">
                     Tentukan kapan surat diperkirakan selesai diproses dan siap diambil.
@@ -582,6 +590,16 @@
             if (!estimasiInput.value) {
                 const lanjut = confirm('⚠️ Estimasi selesai belum diisi. Tetap setujui tanpa estimasi?');
                 if (!lanjut) return;
+            } else {
+                // Validasi estimasi datetime
+                const now = new Date();
+                const estimasiDate = new Date(estimasiInput.value);
+                
+                if (estimasiDate < now) {
+                    alert('❌ Tanggal dan waktu estimasi tidak boleh sebelum sekarang.');
+                    estimasiInput.focus();
+                    return;
+                }
             }
             if (!confirm('✓ Setujui pengajuan surat ini?')) return;
         } else if (status === 'ditolak') {
@@ -596,13 +614,46 @@
         document.getElementById('formKeputusan').submit();
     }
 
-    // Show/hide estimasi berdasarkan status awal
+    // Validasi dan auto-adjust datetime saat input
     document.addEventListener('DOMContentLoaded', function() {
         const statusInput = document.getElementById('statusInput');
         const estimasiGroup = document.getElementById('estimasiGroup');
+        const estimasiInput = document.getElementById('estimasi_selesai');
         
         if (statusInput.value === 'ditolak') {
             estimasiGroup.style.display = 'none';
+        }
+
+        // Auto-adjust datetime jika jam sebelum jam hari ini
+        if (estimasiInput) {
+            estimasiInput.addEventListener('change', function() {
+                const inputValue = this.value;
+                if (!inputValue) return;
+
+                const inputDate = new Date(inputValue);
+                const now = new Date();
+                
+                // Jika tanggal sudah sama atau setelah hari ini, validasi jam
+                const inputDateOnly = new Date(inputDate.getFullYear(), inputDate.getMonth(), inputDate.getDate());
+                const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                
+                // Jika tanggal sama dengan hari ini dan jam sebelum jam sekarang, maju ke hari besok
+                if (inputDateOnly.getTime() === nowDateOnly.getTime() && inputDate < now) {
+                    const nextDay = new Date(now);
+                    nextDay.setDate(nextDay.getDate() + 1);
+                    nextDay.setHours(now.getHours());
+                    nextDay.setMinutes(now.getMinutes());
+                    
+                    // Format ke datetime-local format (YYYY-MM-DDTHH:MM)
+                    const year = nextDay.getFullYear();
+                    const month = String(nextDay.getMonth() + 1).padStart(2, '0');
+                    const day = String(nextDay.getDate()).padStart(2, '0');
+                    const hours = String(nextDay.getHours()).padStart(2, '0');
+                    const minutes = String(nextDay.getMinutes()).padStart(2, '0');
+                    
+                    this.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                }
+            });
         }
     });
 </script>
