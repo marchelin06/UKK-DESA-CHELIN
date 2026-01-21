@@ -271,7 +271,7 @@
 
                 {{-- Tombol Submit --}}
                 <div class="form-actions">
-                    <a href="{{ route('home') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-chevron-left"></i> Kembali
                     </a>
                     <button type="submit" class="btn btn-success">

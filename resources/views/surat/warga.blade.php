@@ -24,10 +24,10 @@
         }
 
         .btn-back {
-            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            background: #2d7d32;
             color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 10px 24px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
@@ -37,12 +37,14 @@
             align-items: center;
             gap: 8px;
             font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
         .btn-back:hover {
-            background: linear-gradient(135deg, #145c42 0%, #1b5e20 100%);
+            background: #1b5e20;
             color: white;
             transform: translateX(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .page-surat-title {

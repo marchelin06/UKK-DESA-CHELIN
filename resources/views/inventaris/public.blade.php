@@ -57,6 +57,10 @@
 </style>
 
 <div class="page-inventaris-public">
+    <a href="{{ route('dashboard') }}" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; padding: 10px 24px; background: #2d7d32; color: white; text-decoration: none; font-weight: 600; border-radius: 50px; font-size: 14px; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+        <i class="fas fa-chevron-left"></i> Kembali
+    </a>
+    
     <h1 class="page-title">Daftar Inventaris Desa</h1>
     <p class="page-subtitle">
         Data berikut merupakan ringkasan aset milik desa yang tercatat dalam sistem.

@@ -98,7 +98,7 @@ class AuthController extends Controller
             'role'     => 'warga', // default
         ]);
 
-        return redirect()->route('login.user')
+        return redirect()->route('login')
             ->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
