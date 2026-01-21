@@ -157,7 +157,8 @@
         cursor: pointer;
         text-decoration: none;
         transition: all 0.3s ease;
-        margin-right: 4px;
+        margin-right: 12px;
+        margin-bottom: 6px;
         display: inline-block;
     }
 
@@ -176,6 +177,8 @@
     .btn-edit {
         background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
         color: #fff;
+        padding: 6px 12px;
+        font-size: 12px;
     }
 
     .btn-edit:hover {

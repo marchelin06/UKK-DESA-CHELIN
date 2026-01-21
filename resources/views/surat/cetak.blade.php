@@ -21,16 +21,19 @@
             border-bottom: 3px double black;
             margin-bottom: 10px;
             padding-bottom: 5px;
+            text-align: center;
         }
 
         .logo {
-            width: 75px;
+            width: 95px;
             height: auto;
+            margin-right: 15px;
         }
 
         .header-text {
             text-align: center;
             vertical-align: middle;
+            display: inline-block;
         }
 
         .header-text h3,
@@ -116,15 +119,15 @@
 <body>
 
     <table class="header-table">
-        <tr>
-            <td style="width: 100px;">
-                <img src="{{ public_path('images/logo-sidoarjo.png') }}" alt="Logo Kabupaten Sidoarjo" class="logo">
-            </td>
-            <td class="header-text">
-                <h3>PEMERINTAH KABUPATEN SIDOARJO</h3>
-                <h4>KECAMATAN KREMBUNG</h4>
-                <h3>KEPALA DESA KEDUNGRAWAN</h3>
-                <p style="font-size: 11pt;">Jl. Raya Kedungrawan No. 12, Krembung, Sidoarjo, 61275</p>
+        <tr style="vertical-align: middle;">
+            <td style="text-align: center; width: 100%;">
+                <img src="{{ public_path('images/logo-sidoarjo.png') }}" alt="Logo Kabupaten Sidoarjo" class="logo" style="vertical-align: middle;">
+                <div class="header-text" style="display: inline-block; vertical-align: middle;">
+                    <h3>PEMERINTAH KABUPATEN SIDOARJO</h3>
+                    <h4>KECAMATAN GEDANGAN</h4>
+                    <h3>KEPALA DESA BANGAH</h3>
+                    <p style="font-size: 11pt;">Jl. Aryo Bebangah No.159, Gedangan, Sidoarjo, 61275</p>
+                </div>
             </td>
         </tr>
     </table>
@@ -135,7 +138,7 @@
     </div>
 
     <div class="content">
-        <p>Yang bertanda tangan di bawah ini Kepala Desa Kedungrawan, Kecamatan Krembung, Kabupaten Sidoarjo,
+        <p>Yang bertanda tangan di bawah ini Kepala Desa Bangah, Kecamatan Gedangan, Kabupaten Sidoarjo,
             menerangkan dengan sebenarnya bahwa:</p>
 
         {{-- ====================================================================== --}}
@@ -656,10 +659,10 @@
             <td style="width: 50%;"></td>
             <td class="signature-section">
                 <p>
-                    Kedungrawan, {{ $surat->updated_at->translatedFormat('d F Y') }}<br>
-                    Kepala Desa Kedungrawan
+                    Bangah, {{ $surat->updated_at->translatedFormat('d F Y') }}<br>
+                    Kepala Desa Bangah
                 </p>
-                <p class="nama-kades">( H. M. NUR ROFIQ )</p>
+                <p class="nama-kades">( BAMBANG HANDOKO )</p>
             </td>
         </tr>
     </table>

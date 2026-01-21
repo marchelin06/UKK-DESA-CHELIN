@@ -1458,7 +1458,7 @@
                     </div> {{-- /section-online-wrapper --}}
 
                     <button type="submit" id="submitBtn" class="btn-primary"
-                        style="min-width: 150px; padding: 12px 24px;">
+                        style="margin-top: 25px; min-width: 130px; padding: 10px 20px; font-size: 15px;">
                         <i class="fas fa-paper-plane"></i> Ajukan Surat
                     </button>
                 </form>

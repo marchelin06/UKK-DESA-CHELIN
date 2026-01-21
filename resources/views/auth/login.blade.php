@@ -40,6 +40,9 @@
 
     .form-group {
         margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        min-height: 88px;
     }
 
     .form-group label {
@@ -171,6 +174,11 @@
         display: block;
         font-size: 13px;
         font-weight: 500;
+        min-height: 16px;
+    }
+    
+    .form-group {
+        position: relative;
     }
 
     .form-control.is-invalid {
@@ -236,17 +244,6 @@
             @if (session('error'))
                 <div class="alert alert-danger">
                     ✕ {{ session('error') }}
-                </div>
-            @endif
-
-            {{-- Error Validasi --}}
-            @if ($errors->any())
-                <div class="alert alert-warning">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
                 </div>
             @endif
 

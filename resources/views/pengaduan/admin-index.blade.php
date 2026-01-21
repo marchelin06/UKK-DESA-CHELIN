@@ -163,7 +163,7 @@
     {{-- BACK BUTTON --}}
     <div class="page-back" style="margin-bottom: 20px;">
         <a href="{{ route('admin.dashboard') }}" class="btn-back">
-            <i class="fas fa-chevron-left"></i> Kembali ke Dashboard
+            <i class="fas fa-chevron-left"></i> Kembali
         </a>
     </div>
 

@@ -1,15 +1,40 @@
-@extends('layouts.admin')
+@extends('layouts.admin-form')
 
 @section('title', 'Tambah Inventaris')
 
 @section('content')
 <style>
     .page-inventaris-form {
-        max-width: 800px;
+        max-width: 600px;
         margin: 30px auto;
-        padding: 0 15px;
+        padding: 0 15px 80px 15px;
         font-family: Arial, sans-serif;
     }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #1b5e20 0%, #2d7d32 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+    .btn-back:hover {
+        background: linear-gradient(135deg, #0d3a1a 0%, #1b5e20 100%);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+    }
+
     .card-form {
         background: #ffffff;
         border-radius: 10px;
@@ -30,7 +55,7 @@
 </style>
 
 <div class="page-inventaris-form">
-    <a href="{{ route('inventaris.index') }}" class="btn btn-secondary mb-3"><i class="fas fa-chevron-left"></i> Kembali</a>
+    <a href="{{ route('inventaris.index') }}" class="btn-back"><i class="fas fa-chevron-left"></i> Kembali</a>
 
     <div class="card-form">
         <h1 class="form-title">Tambah Data Inventaris</h1>
