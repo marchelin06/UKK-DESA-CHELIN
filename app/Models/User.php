@@ -25,6 +25,13 @@ class User extends Authenticatable
         'username',
         'nik',
         'no_hp',
+        'is_verified',
+        'verified_at',
+        'alasan_kunjungan',
+        'durasi_tinggal',
+        'asal_daerah',
+        'catatan_admin',
+        'approved_by',
     ];
 
     /**
@@ -46,6 +53,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

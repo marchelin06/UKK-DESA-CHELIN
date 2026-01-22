@@ -39,6 +39,21 @@
         h2 {
             font-weight: 700;
         }
+
+        .g-recaptcha {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .recaptcha-error {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 8px;
+            display: block;
+            font-weight: 500;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -59,9 +74,17 @@
         <label class="mb-1">Password</label>
         <input type="password" name="password" class="form-control mb-4" required>
 
+        {{-- reCAPTCHA v2 Checkbox --}}
+        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+        @if ($errors->has('g-recaptcha-response'))
+            <span class="recaptcha-error">{{ $errors->first('g-recaptcha-response') }}</span>
+        @endif
+
         <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
 </div>
 
 </body>
 </html>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

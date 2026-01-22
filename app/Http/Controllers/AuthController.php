@@ -16,6 +16,33 @@ class AuthController extends Controller
 {
     /**
      * --------------------------
+     * VERIFIKASI reCAPTCHA v2
+     * --------------------------
+     */
+    protected function verifyCaptcha($captchaToken)
+    {
+        try {
+            $secretKey = config('services.recaptcha.secret_key');
+            
+            $response = \Illuminate\Support\Facades\Http::asForm()->post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                [
+                    'secret' => $secretKey,
+                    'response' => $captchaToken,
+                ]
+            );
+
+            $body = $response->json();
+            
+            // reCAPTCHA v2 mengembalikan success true/false
+            return isset($body['success']) && $body['success'] === true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * --------------------------
      * TAMPIL FORM LOGIN USER
      * --------------------------
      */
@@ -35,12 +62,21 @@ class AuthController extends Controller
       
         $request->validate([
             'email'    => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'g-recaptcha-response' => 'required'
         ], [
             'email.required' => 'Email wajib diisi.',
-            'password.required' => 'Password wajib diisi.'
+            'password.required' => 'Password wajib diisi.',
+            'g-recaptcha-response.required' => 'Verifikasi reCAPTCHA diperlukan.'
         ]);
 
+        // Verifikasi reCAPTCHA
+        $captchaResponse = $this->verifyCaptcha($request->input('g-recaptcha-response'));
+        if (!$captchaResponse) {
+            return back()->withErrors([
+                'g-recaptcha-response' => 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.'
+            ])->withInput();
+        }
         
         // Kredensial Login
         $credentials = $request->only('email', 'password');
@@ -48,9 +84,34 @@ class AuthController extends Controller
 
         // Pastikan hanya role warga yang bisa login menggunakan AuthController
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            
+            // Jika pendatang dan belum diverifikasi, logout dan tampilkan pesan
+            if ($user->role == 'pendatang' && $user->is_verified == 0) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda masih menunggu verifikasi admin. Silakan cek email untuk informasi lebih lanjut.'
+                ])->withInput();
+            }
+            
+            // Jika pendatang dan ditolak, logout dan tampilkan pesan
+            if ($user->role == 'pendatang' && $user->is_verified == 2) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Akun Anda telah ditolak. ' . ($user->catatan_admin ? 'Alasan: ' . $user->catatan_admin : '')
+                ])->withInput();
+            }
+            
+            // Jika pendatang dan sudah disetujui, berikan pesan khusus
+            if ($user->role == 'pendatang' && $user->is_verified == 1) {
+                $request->session()->regenerate();
+                return redirect()->route('home')
+                    ->with('success', '🎉 Selamat! Akun Anda telah disetujui admin. Silakan login untuk melanjutkan.');
+            }
+            
             $request->session()->regenerate();
        
-            if(Auth::user()->role == 'admin'){
+            if($user->role == 'admin'){
                 return redirect()->route('admin.dashboard')
                 ->with('success', 'Login berhasil!');
             }
@@ -85,21 +146,44 @@ class AuthController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'g-recaptcha-response' => 'required'
         ], [
             'name.required' => 'Nama harus diisi.',
             'email.unique' => 'Email sudah digunakan.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
+            'g-recaptcha-response.required' => 'Verifikasi reCAPTCHA diperlukan.'
         ]);
+
+        // Verifikasi reCAPTCHA
+        $captchaResponse = $this->verifyCaptcha($request->input('g-recaptcha-response'));
+        if (!$captchaResponse) {
+            return back()->withErrors([
+                'g-recaptcha-response' => 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.'
+            ])->withInput();
+        }
+
+        // Cek apakah user adalah pendatang (jika isi alasan kunjungan, dianggap pendatang)
+        $isPendatang = !empty($request->alasan_kunjungan) || !empty($request->durasi_tinggal) || !empty($request->asal_daerah);
 
         User::create([
             'name'     => $request->name,
+            'username' => $request->username,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'warga', // default
+            'role'     => $isPendatang ? 'pendatang' : 'warga',
+            'is_verified' => $isPendatang ? 0 : 1, // Pendatang: tunggu verifikasi, Warga: langsung aktif
+            'alasan_kunjungan' => $request->alasan_kunjungan,
+            'durasi_tinggal' => $request->durasi_tinggal,
+            'asal_daerah' => $request->asal_daerah,
         ]);
 
-        return redirect()->route('login')
-            ->with('success', 'Registrasi berhasil! Silakan login.');
+        if ($isPendatang) {
+            return redirect()->route('login')
+                ->with('success', 'Registrasi berhasil! Akun Anda sedang menunggu verifikasi admin. Silakan periksa email untuk notifikasi status.');
+        } else {
+            return redirect()->route('login')
+                ->with('success', 'Registrasi berhasil! Silakan login.');
+        }
     }
 
     /**

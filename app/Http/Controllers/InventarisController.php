@@ -28,6 +28,16 @@ class InventarisController extends Controller
     }
 
     /**
+     * PENDATANG — Hanya lihat inventaris (READ ONLY)
+     */
+    public function indexPendatang()
+    {
+        $data = Inventaris::orderBy('nama_barang')->paginate(10);
+
+        return view('inventaris.pendatang', compact('data'));
+    }
+
+    /**
      * ADMIN — Halaman detail satu inventaris
      */
     public function show($id)

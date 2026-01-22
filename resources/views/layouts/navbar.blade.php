@@ -42,12 +42,29 @@
         {{-- Dashboard (only for authenticated users) --}}
         @auth
             <li>
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" 
-                   class="@if(request()->routeIs('dashboard', 'admin.dashboard')) active @endif">
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : (auth()->user()->role === 'pendatang' ? route('dashboard.pendatang') : route('dashboard')) }}" 
+                   class="@if(request()->routeIs('dashboard', 'admin.dashboard', 'dashboard.pendatang')) active @endif">
                     <i class="fas fa-chart-line"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
+        @endauth
+
+        {{-- Admin Menu Section --}}
+        @auth
+            @if(auth()->user()->role === 'admin')
+                <div class="sidebar-divider"></div>
+                <li style="padding: 10px 20px; color: rgba(255, 255, 255, 0.6); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                    ADMIN PANEL
+                </li>
+                <li>
+                    <a href="{{ route('admin.pendatang.index') }}" 
+                       class="@if(request()->routeIs('admin.pendatang.*')) active @endif">
+                        <i class="fas fa-user-check"></i>
+                        <span>Verifikasi Pendatang</span>
+                    </a>
+                </li>
+            @endif
         @endauth
 
         <div class="sidebar-divider"></div>
@@ -96,6 +113,8 @@
             <p class="profile-role">
                 @if(auth()->user()->role === 'admin')
                     <span class="badge-admin">Admin Desa</span>
+                @elseif(auth()->user()->role === 'pendatang')
+                    <span class="badge-user">Pendatang ✓</span>
                 @else
                     <span class="badge-user">Warga</span>
                 @endif

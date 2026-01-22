@@ -19,9 +19,14 @@ class CheckProfileComplete
         // Jika user sudah login dan role adalah warga
         if (Auth::check() && Auth::user()->role == 'warga') {
             // Jika NIK atau No HP belum diisi, arahkan ke profile edit
-            if (Auth::user()->nik == null || Auth::user()->no_hp == null) {
-                return redirect()->route('profile.edit')
-                    ->with('warning', 'Silakan lengkapi data diri Anda terlebih dahulu.');
+            if ((Auth::user()->nik == null || Auth::user()->nik == '') || 
+                (Auth::user()->no_hp == null || Auth::user()->no_hp == '')) {
+                
+                // Jika bukan di halaman profile edit, redirect
+                if (!$request->routeIs('profile.edit', 'profile.update', 'profile.show')) {
+                    return redirect()->route('profile.edit')
+                        ->with('warning', 'Silakan lengkapi data diri Anda terlebih dahulu.');
+                }
             }
         }
 

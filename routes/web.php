@@ -10,6 +10,7 @@ use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PendatangVerificationController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -30,19 +31,19 @@ Route::get('/layanan-publik', function () {
 
 Route::get('/layanan-publik/surat', function () {
     return view('layanan.surat-info');
-})->name('layanan.surat');
+})->name('layanan.surat.public');
 
 Route::get('/layanan-publik/inventaris', function () {
     return view('layanan.inventaris-info');
-})->name('layanan.inventaris');
+})->name('layanan.inventaris.public');
 
 Route::get('/layanan-publik/kegiatan', function () {
     return view('layanan.kegiatan-info');
-})->name('layanan.kegiatan');
+})->name('layanan.kegiatan.public');
 
 Route::get('/layanan-publik/pengaduan', function () {
     return view('layanan.pengaduan-info');
-})->name('layanan.pengaduan');
+})->name('layanan.pengaduan.public');
 
 // --------------------------
 // LOGIN & REGISTER
@@ -85,6 +86,34 @@ Route::middleware(['auth', 'role:warga', 'check.profile'])->group(function () {
     // Inventaris (WARGA HANYA BISA LIHAT)
     Route::get('/inventaris', [InventarisController::class, 'publicIndex'])
         ->name('inventaris.public');
+});
+
+// --------------------------
+// PENDATANG (SUDAH DISETUJUI)
+// --------------------------
+Route::middleware(['auth', 'role:pendatang'])->group(function () {
+
+    Route::get('/dashboard-pendatang', function () {
+        $user = Auth::user();
+        if ($user->is_verified != 1) {
+            return redirect()->route('home')->with('error', 'Akun Anda belum disetujui admin.');
+        }
+        return view('dashboard.pendatang', ['user' => $user]);
+    })->name('dashboard.pendatang');
+
+    // Layanan Surat - view only untuk pendatang
+    Route::get('/layanan/surat', [SuratController::class, 'indexPendatang'])->name('layanan.surat');
+
+    // Layanan Inventaris - view only untuk pendatang
+    Route::get('/layanan/inventaris', [InventarisController::class, 'indexPendatang'])->name('layanan.inventaris');
+
+    // Kegiatan - semua user bisa lihat
+    Route::get('/layanan/kegiatan', [KegiatanController::class, 'index'])->name('layanan.kegiatan');
+
+    // Pengaduan - info only untuk pendatang
+    Route::get('/layanan/pengaduan', function () {
+        return view('layanan.pengaduan-info');
+    })->name('layanan.pengaduan.pendatang');
 });
 
 // --------------------------
@@ -147,6 +176,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/admin/notifikasi/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
     Route::delete('/admin/notifikasi/{id}', [NotificationController::class, 'destroy'])->name('notification.destroy');
     Route::get('/admin/notifikasi/api/unread', [NotificationController::class, 'getUnreadCount'])->name('notification.unread');
+
+    // VERIFIKASI PENDATANG
+    Route::get('/admin/pendatang', [PendatangVerificationController::class, 'index'])->name('admin.pendatang.index');
+    Route::get('/admin/pendatang/{id}', [PendatangVerificationController::class, 'show'])->name('admin.pendatang.show');
+    Route::post('/admin/pendatang/{id}/approve', [PendatangVerificationController::class, 'approve'])->name('admin.pendatang.approve');
+    Route::post('/admin/pendatang/{id}/reject', [PendatangVerificationController::class, 'reject'])->name('admin.pendatang.reject');
 });
 
 // --------------------------

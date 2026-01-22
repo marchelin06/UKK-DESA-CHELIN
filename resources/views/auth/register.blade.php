@@ -4,34 +4,32 @@
 <style>
     body {
         background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f5 100%);
-        min-height: 100vh;
     }
 
     .register-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        padding: 20px;
+        display: block;
+        padding: 60px 20px;
     }
 
     .register-container {
         width: 100%;
         max-width: 550px;
+        margin: 0 auto;
     }
 
     .register-card {
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 12px 40px rgba(27, 94, 32, 0.15);
-        padding: 48px;
+        padding: 40px;
         border: 1px solid rgba(67, 160, 71, 0.1);
     }
 
     .register-title {
         text-align: center;
-        margin-bottom: 32px;
-        font-size: 32px;
+        margin-bottom: 28px;
+        margin-top: 0;
+        font-size: 28px;
         font-weight: 700;
         color: #1b5e20;
         letter-spacing: -0.5px;
@@ -180,6 +178,20 @@
         box-shadow: 0 0 0 5px rgba(239, 83, 80, 0.12);
     }
 
+    .recaptcha-error {
+        color: #d32f2f;
+        font-size: 13px;
+        margin-top: 8px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .g-recaptcha {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+    }
+
     @media (max-width: 600px) {
         .register-card {
             padding: 32px 24px;
@@ -273,6 +285,60 @@
                     @enderror
                 </div>
 
+                {{-- Divider untuk Info Pendatang --}}
+                <div style="margin: 24px 0; border-top: 1px solid #e8f5e9; padding-top: 20px;">
+                    <p style="font-size: 13px; color: #666; margin-bottom: 16px; text-align: center;">
+                        ℹ️ <strong>Apakah Anda Pendatang?</strong><br>
+                        <span style="font-size: 12px;">Isi informasi di bawah jika Anda bukan warga asli desa</span>
+                    </p>
+                </div>
+
+                {{-- Alasan Kunjungan --}}
+                <div class="form-group">
+                    <label for="alasan_kunjungan">Alasan/Tujuan Kunjungan (Opsional)</label>
+                    <select id="alasan_kunjungan" name="alasan_kunjungan" class="form-control @error('alasan_kunjungan') is-invalid @enderror">
+                        <option value="">-- Pilih Alasan --</option>
+                        <option value="Wisata" {{ old('alasan_kunjungan') == 'Wisata' ? 'selected' : '' }}>Wisata</option>
+                        <option value="Kerja" {{ old('alasan_kunjungan') == 'Kerja' ? 'selected' : '' }}>Kerja</option>
+                        <option value="Bisnis" {{ old('alasan_kunjungan') == 'Bisnis' ? 'selected' : '' }}>Bisnis</option>
+                        <option value="Keluarga" {{ old('alasan_kunjungan') == 'Keluarga' ? 'selected' : '' }}>Keluarga</option>
+                        <option value="Pendidikan" {{ old('alasan_kunjungan') == 'Pendidikan' ? 'selected' : '' }}>Pendidikan</option>
+                        <option value="Lainnya" {{ old('alasan_kunjungan') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                    </select>
+                    <small class="form-info">Opsional</small>
+                    @error('alasan_kunjungan')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Durasi Tinggal --}}
+                <div class="form-group">
+                    <label for="durasi_tinggal">Durasi Tinggal (Opsional)</label>
+                    <input type="text" id="durasi_tinggal" name="durasi_tinggal" class="form-control @error('durasi_tinggal') is-invalid @enderror"
+                        placeholder="Contoh: 1-2 minggu, 1 bulan" value="{{ old('durasi_tinggal') }}">
+                    <small class="form-info">Opsional</small>
+                    @error('durasi_tinggal')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Asal Daerah --}}
+                <div class="form-group">
+                    <label for="asal_daerah">Asal Daerah/Negara (Opsional)</label>
+                    <input type="text" id="asal_daerah" name="asal_daerah" class="form-control @error('asal_daerah') is-invalid @enderror"
+                        placeholder="Contoh: Jakarta, Indonesia" value="{{ old('asal_daerah') }}">
+                    <small class="form-info">Opsional</small>
+                    @error('asal_daerah')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- reCAPTCHA v2 Checkbox --}}
+                <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                @if ($errors->has('g-recaptcha-response'))
+                    <span class="recaptcha-error">{{ $errors->first('g-recaptcha-response') }}</span>
+                @endif
+
                 <button type="submit" class="btn-register">
                     Register
                 </button>
@@ -286,3 +352,5 @@
 </div>
 
 @endsection
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>

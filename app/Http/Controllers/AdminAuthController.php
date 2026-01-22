@@ -9,6 +9,33 @@ class AdminAuthController extends Controller
 {
     /**
      * --------------------------
+     * VERIFIKASI reCAPTCHA v2
+     * --------------------------
+     */
+    protected function verifyCaptcha($captchaToken)
+    {
+        try {
+            $secretKey = config('services.recaptcha.secret_key');
+            
+            $response = \Illuminate\Support\Facades\Http::asForm()->post(
+                'https://www.google.com/recaptcha/api/siteverify',
+                [
+                    'secret' => $secretKey,
+                    'response' => $captchaToken,
+                ]
+            );
+
+            $body = $response->json();
+            
+            // reCAPTCHA v2 mengembalikan success true/false
+            return isset($body['success']) && $body['success'] === true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * --------------------------
      * TAMPIL FORM LOGIN ADMIN
      * --------------------------
      */
@@ -26,11 +53,21 @@ class AdminAuthController extends Controller
     {
         $request->validate([
             'email'    => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'g-recaptcha-response' => 'required'
         ], [
             'email.required' => 'Email wajib diisi.',
-            'password.required' => 'Password wajib diisi.'
+            'password.required' => 'Password wajib diisi.',
+            'g-recaptcha-response.required' => 'Verifikasi reCAPTCHA diperlukan.'
         ]);
+
+        // Verifikasi reCAPTCHA
+        $captchaResponse = $this->verifyCaptcha($request->input('g-recaptcha-response'));
+        if (!$captchaResponse) {
+            return back()->withErrors([
+                'g-recaptcha-response' => 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.'
+            ])->withInput();
+        }
 
         $credentials = $request->only('email', 'password');
 

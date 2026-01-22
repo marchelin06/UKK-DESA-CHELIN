@@ -23,6 +23,18 @@ class SuratController extends Controller
         return view('surat.warga', compact('surat'));
     }
 
+    // =========================
+    // PENDATANG: LIHAT SAJA (READ-ONLY)
+    // =========================
+    public function indexPendatang()
+    {
+        $surat = Surat::where('status', 'selesai')
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return view('surat.pendatang', compact('surat'));
+    }
+
     public function store(Request $request)
     {
         // Validasi dasar

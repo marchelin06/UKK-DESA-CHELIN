@@ -38,7 +38,7 @@
                 <p style="flex: 1; font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.6;">
                     Layanan pengurusan surat digital seperti surat keterangan, surat usaha, dan surat lainnya dengan proses yang cepat dan transparan.
                 </p>
-                <a href="{{ route('layanan.surat') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                <a href="{{ route('layanan.surat.public') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                     Lihat Detail
                 </a>
             </div>
@@ -52,7 +52,7 @@
                 <p style="flex: 1; font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.6;">
                     Informasi mengenai aset dan inventaris desa yang dikelola secara transparan dan terstruktur dengan baik.
                 </p>
-                <a href="{{ route('layanan.inventaris') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                <a href="{{ route('layanan.inventaris.public') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                     Lihat Detail
                 </a>
             </div>
@@ -66,7 +66,7 @@
                 <p style="flex: 1; font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.6;">
                     Informasi kegiatan dan acara yang diselenggarakan oleh pemerintah desa untuk kemajuan masyarakat.
                 </p>
-                <a href="{{ route('layanan.kegiatan') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                <a href="{{ route('layanan.kegiatan.public') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                     Lihat Detail
                 </a>
             </div>
@@ -80,7 +80,7 @@
                 <p style="flex: 1; font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.6;">
                     Saluran komunikasi untuk masyarakat menyampaikan masukan, keluhan, atau saran kepada pemerintah desa.
                 </p>
-                <a href="{{ route('layanan.pengaduan') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                <a href="{{ route('layanan.pengaduan.public') }}" style="display: inline-block; width: 100%; text-align: center; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 8px; font-size: 13px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                     Lihat Detail
                 </a>
             </div>

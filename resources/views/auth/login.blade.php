@@ -189,6 +189,20 @@
         box-shadow: 0 0 0 5px rgba(239, 83, 80, 0.12);
     }
 
+    .recaptcha-error {
+        color: #d32f2f;
+        font-size: 13px;
+        margin-top: 8px;
+        display: block;
+        font-weight: 500;
+    }
+
+    .g-recaptcha {
+        margin: 20px 0;
+        display: flex;
+        justify-content: center;
+    }
+
     @media (max-width: 600px) {
         .login-wrapper {
             padding: 16px;
@@ -286,6 +300,12 @@
                     </a>
                 </div>
 
+                {{-- reCAPTCHA v2 Checkbox --}}
+                <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                @if ($errors->has('g-recaptcha-response'))
+                    <span class="recaptcha-error">{{ $errors->first('g-recaptcha-response') }}</span>
+                @endif
+
                 <button type="submit" class="btn-login">
                     Login
                 </button>
@@ -299,3 +319,5 @@
 </div>
 
 @endsection
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
